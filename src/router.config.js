@@ -3,7 +3,7 @@ export default {
         [
             {
                 path: "/",
-               redirect:"/upload",
+                redirect: "/timePage",
             },
             {
                 path: "/upload",
@@ -16,6 +16,10 @@ export default {
             {
                 path: "/realPage",
                 component: () => import(/* webpackChunkName: "index" */ './components/TemplatePage.vue'),
+            },
+            {
+                path: "/timePage",
+                component: () => import(/* webpackChunkName: "index" */ './components/TimePage.vue'),
             }
         ]
 }
