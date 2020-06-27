@@ -2,9 +2,42 @@
   <el-main>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <h1>{{time}}</h1>
+        <el-button
+          style="float: left; padding: 3px 0"
+          type="text"
+          @click="dialogVisible = true"
+        >添加定时任务</el-button>
+        <span>任务列表</span>
       </div>
+      <template>
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="date" label="日期" width="180"></el-table-column>
+          <el-table-column prop="cronExpression" label="cron表达式" width="180"></el-table-column>
+          <el-table-column prop="address" label="上一次执行时间"></el-table-column>
+        </el-table>
+      </template>
     </el-card>
+    <el-dialog title="添加定时任务" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <el-card class="box-card">
+        <template>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-input
+                placeholder="cron表达式"
+                suffix-icon="el-icon-date"
+                v-model="cronExpressionInput"
+              ></el-input>
+            </el-col>
+            <el-col :span="12">
+              <el-input placeholder="任务名称" suffix-icon="el-icon-date" v-model="tashName"></el-input>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-button type="primary" @click="addCronTask">添加任务</el-button>
+          </el-row>
+        </template>
+      </el-card>
+    </el-dialog>
   </el-main>
 </template>
 
@@ -15,12 +48,15 @@ export default {
   name: "UploadPage",
   data() {
     return {
-      time: "111"
+      time: "111",
+      dialogVisible: false,
+      cronExpressionInput: "",
+      tashName: ""
     };
   },
   mounted() {
     var self = this;
-    setInterval(getTotelNumber, 10);
+    setInterval(getTotelNumber, 5000);
     function getTotelNumber() {
       Request.get("/api/world")
         .then(response => {
@@ -38,6 +74,24 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
+    },
+    addCronTask() {
+      Request.post("/api/addTask")
+        .then(response => {
+          console.log(response);
+          self.time = response.data;
+        })
+        .catch(response => {
+          console.log(response);
+        });
+    },
+
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
     },
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -93,4 +147,7 @@ export default {
 </script>
 
 <style scoped>
+.el-row {
+  margin-bottom: 20px;
+}
 </style>
