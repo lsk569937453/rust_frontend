@@ -20,6 +20,9 @@ export default {
             {
                 path: "/timePage",
                 component: () => import(/* webpackChunkName: "index" */ './components/TimePage.vue'),
+            }, {
+                path: "/addTask",
+                component: () => import(/* webpackChunkName: "index" */ './components/addTask.vue'),
             }
         ]
 }

@@ -2,11 +2,7 @@
   <el-main>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-button
-          style="float: left; padding: 3px 0"
-          type="text"
-          @click="dialogVisible = true"
-        >添加定时任务</el-button>
+        <el-button style="float: left; padding: 3px 0" type="text" @click="addCronTask">添加定时任务</el-button>
         <span>任务列表</span>
       </div>
       <template>
@@ -56,7 +52,7 @@ export default {
   },
   mounted() {
     var self = this;
-    setInterval(getTotelNumber, 5000);
+    // setInterval(getTotelNumber, 5000);
     function getTotelNumber() {
       Request.get("/api/world")
         .then(response => {
@@ -76,6 +72,14 @@ export default {
       console.log(file);
     },
     addCronTask() {
+      this.$router.push({
+        //核心语句
+        path: "/addTask", //跳转的路径
+        query: {
+          //路由传参时push和query搭配使用 ，作用时传递参数
+          fileCode: "fileCode"
+        }
+      });
       Request.post("/api/addTask")
         .then(response => {
           console.log(response);
