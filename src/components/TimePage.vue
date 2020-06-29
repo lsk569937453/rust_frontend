@@ -51,6 +51,9 @@ export default {
     };
   },
   mounted() {
+    document
+      .querySelector("body")
+      .setAttribute("style", "background-color:#C0C4CC");
     var self = this;
     // setInterval(getTotelNumber, 5000);
     function getTotelNumber() {

@@ -1,38 +1,49 @@
 <template>
-    <div id="app">
+  <div id="app">
+    <el-container>
+      <el-header>
+        <NavMenu></NavMenu>
+      </el-header>
+      <el-main>
         <router-view></router-view>
-    </div>
+        <!--路由出口 -->
+      </el-main>
+      <el-footer>Footer</el-footer>
+    </el-container>
+  </div>
 </template>
 
 <script>
-    import Subscription from './components/Subscription'
-    import MainPage from './components/MainPage'
-    import MainNewPage from './components/MainNewPage'
+import Subscription from "./components/Subscription";
+import MainPage from "./components/MainPage";
+import MainNewPage from "./components/MainNewPage";
+import NavMenu from "./components/main";
 
-    export default {
-        name: 'app',
-        components: {
-            Subscription,
-            MainPage,
-            MainNewPage
-        }
-    }
+export default {
+  name: "app",
+  components: {
+    Subscription,
+    MainPage,
+    MainNewPage,
+    NavMenu
+  }
+};
 </script>
 
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-    }
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
-    body .el-table th.gutter {
-        display: table-cell !important;
-    }
+body .el-table th.gutter {
+  display: table-cell !important;
+}
 
-    body .el-table colgroup.gutter {
-        display: table-cell !important;
-    }
+body .el-table colgroup.gutter {
+  display: table-cell !important;
+}
 </style>

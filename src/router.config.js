@@ -3,7 +3,7 @@ export default {
         [
             {
                 path: "/",
-                redirect: "/timePage",
+                redirect: "/mainPage",
             },
             {
                 path: "/upload",
@@ -23,6 +23,10 @@ export default {
             }, {
                 path: "/addTask",
                 component: () => import(/* webpackChunkName: "index" */ './components/addTask.vue'),
+            },
+            {
+                path: "/mainPage",
+                component: () => import(/* webpackChunkName: "index" */ './components/main.vue'),
             }
         ]
 }
