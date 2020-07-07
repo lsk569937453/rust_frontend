@@ -92,6 +92,10 @@ export default {
           console.log(response);
         });
     },
+    
+    //测试函数
+    test(){console.log("a");
+    },
 
     handleClose(done) {
       this.$confirm("确认关闭？")
