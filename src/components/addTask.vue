@@ -1,60 +1,52 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>添加任务</span>
-        </div>
-        <template>
-          <el-form
-            :rules="rules"
-            label-width="100px"
-            :model="formLabelAlign"
-            label-position="right"
-          >
-            <el-row>
-              <el-form-item label="名称" prop="taskName">
-                <el-input v-model="formLabelAlign.taskName"></el-input>
-              </el-form-item>
-              <el-form-item label="cron表达式" prop="cronExpressionInput">
-                <el-col :span="22">
-                  <el-input v-model="formLabelAlign.cronExpressionInput" :xs="8"></el-input>
-                </el-col>
-                <el-col :span="2">
-                  <el-button type="primary" @click="checkCron">检验表达式</el-button>
-                </el-col>
-              </el-form-item>
-              <!-- <el-form-item label="method" prop="httpMethod">
+  <el-main>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>添加任务</span>
+      </div>
+      <template>
+        <el-form :rules="rules" label-width="100px" :model="formLabelAlign" label-position="right">
+          <el-row>
+            <el-form-item label="名称" prop="taskName">
+              <el-input v-model="formLabelAlign.taskName"></el-input>
+            </el-form-item>
+            <el-form-item label="cron表达式" prop="cronExpressionInput">
+              <el-col :span="22">
+                <el-input v-model="formLabelAlign.cronExpressionInput" :xs="8"></el-input>
+              </el-col>
+              <el-col :span="2">
+                <el-button type="primary" @click="checkCron">检验表达式</el-button>
+              </el-col>
+            </el-form-item>
+            <!-- <el-form-item label="method" prop="httpMethod">
             <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
               <el-option label="区域一" value="shanghai"></el-option>
               <el-option label="区域二" value="beijing"></el-option>
             </el-select>
-              </el-form-item>-->
-              <el-form-item label="url" prop="url">
-                <el-input v-model="formLabelAlign.url"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="addCronTask">立即创建</el-button>
-                <el-button>取消</el-button>
-              </el-form-item>
-            </el-row>
-          </el-form>
-        </template>
-      </el-card>
+            </el-form-item>-->
+            <el-form-item label="url" prop="url">
+              <el-input v-model="formLabelAlign.url"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addCronTask">立即创建</el-button>
+              <el-button>取消</el-button>
+            </el-form-item>
+          </el-row>
+        </el-form>
+      </template>
+    </el-card>
 
-      <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
-    </el-main>
-    <el-footer>
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>定时任务执行列表</span>
-        </div>
-        <template>
-          <div v-for="(item,i) in checklog" :key="i">{{item}}</div>
-        </template>
-      </el-card>
-    </el-footer>
-  </el-container>
+    <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
+
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>定时任务执行列表</span>
+      </div>
+      <template>
+        <div v-for="(item,i) in checklog" :key="i">{{item}}</div>
+      </template>
+    </el-card>
+  </el-main>
 </template>
 
 <script>

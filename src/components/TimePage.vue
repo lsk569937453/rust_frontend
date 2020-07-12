@@ -1,15 +1,22 @@
 <template>
-  <el-main>
+  <el-main style="height:100%">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <el-button style="float: left; padding: 3px 0" type="text" @click="addCronTask">添加定时任务</el-button>
         <span>任务列表</span>
       </div>
       <template>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="日期" width="180"></el-table-column>
-          <el-table-column prop="cronExpression" label="cron表达式" width="180"></el-table-column>
-          <el-table-column prop="address" label="上一次执行时间"></el-table-column>
+        <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
+          <el-table-column prop="timestamp" label="日期" width="180"></el-table-column>
+          <el-table-column prop="taskCron" label="cron表达式" width="180"></el-table-column>
+          <el-table-column prop="taskUrl" label="调用的url"></el-table-column>
+          <el-table-column fixed="right" label="操作" width="250">
+            <template slot-scope="scope">
+              <el-button @click="clickToHistory(scope.row)" type="primary" round size="medium">编辑</el-button>
+
+              <el-button @click="clickToHistory(scope.row)" type="primary" round size="medium">查看历史</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </template>
     </el-card>
@@ -47,7 +54,8 @@ export default {
       time: "111",
       dialogVisible: false,
       cronExpressionInput: "",
-      tashName: ""
+      tashName: "",
+      tableData: []
     };
   },
   mounted() {
@@ -56,18 +64,50 @@ export default {
       .setAttribute("style", "background-color:#C0C4CC");
     var self = this;
     // setInterval(getTotelNumber, 5000);
-    function getTotelNumber() {
-      Request.get("/api/world")
-        .then(response => {
-          console.log(response);
-          self.time = response.data;
-        })
-        .catch(response => {
-          console.log(response);
-        });
-    }
+    let postJson = { user_id: "-1" };
+    Request.post("/api/task/get", postJson).then(response => {
+      let data = response.data;
+      if (data.res_code == 0) {
+        for (var item of data.message) {
+          let taskName = item["task_name"];
+          let taskCron = item["task_cron"];
+          let url = item["url"];
+          let timestamp = item["timestamp"];
+          let id = item["id"];
+          let obj = {
+            taskName: taskName,
+            taskCron: taskCron,
+            taskUrl: url,
+            timestamp: timestamp,
+            id: id
+          };
+          this.tableData.push(obj);
+        }
+      }
+    });
+    // function getTotelNumber() {
+    //   Request.get("/api/world")
+    //     .then(response => {
+    //       console.log(response);
+    //       self.time = response.data;
+    //     })
+    //     .catch(response => {
+    //       console.log(response);
+    //     });
+    // }
   },
   methods: {
+    clickToHistory(row) {
+      console.log("aaa", row);
+    },
+    tableRowClassName({ row, rowIndex }) {
+      if (rowIndex % 2 === 0) {
+        return "warning-row";
+      } else if (rowIndex % 2 === 1) {
+        return "success-row";
+      }
+      return "";
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -92,9 +132,10 @@ export default {
           console.log(response);
         });
     },
-    
+
     //测试函数
-    test(){console.log("a");
+    test() {
+      console.log("a");
     },
 
     handleClose(done) {
@@ -157,8 +198,16 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .el-row {
   margin-bottom: 20px;
+}
+
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>

@@ -1,14 +1,8 @@
 <template>
   <div id="NavMenu">
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
-      router
-    >
+    <el-menu :default-active="activeIndex" class="el-menu-demo" @select="handleSelect" router>
       <template v-for="item in navMenuData">
-        <el-menu-item :index="item.index" v-if="!item.child" :key="item">{{item.name}}</el-menu-item>
+        <el-menu-item :index="item.index" v-if="!item.child" :key="item.index">{{item.name}}</el-menu-item>
 
         <el-submenu :index="item.index" v-if="item.child" :key="item.index">
           <template slot="title">{{item.name}}</template>
@@ -26,10 +20,10 @@ export default {
   name: "NavMenu",
   data() {
     return {
-      activeIndex: "movie",
+      activeIndex: "timePage",
       navMenuData: [
         { index: "timePage", name: "任务列表" },
-        { index: "addTask", name: "小说" },
+        { index: "taskhistory", name: "任务历史" },
         {
           index: "2",
           name: "我的工作台",
