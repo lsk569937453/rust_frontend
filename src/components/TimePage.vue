@@ -61,7 +61,7 @@ export default {
   mounted() {
     document
       .querySelector("body")
-      .setAttribute("style", "background-color:#C0C4CC");
+      .setAttribute("style", "background-color:#f0f0f0");
     var self = this;
     // setInterval(getTotelNumber, 5000);
     let postJson = { user_id: "-1" };

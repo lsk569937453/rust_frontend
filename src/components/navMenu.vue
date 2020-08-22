@@ -1,6 +1,14 @@
 <template>
   <div id="NavMenu">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" @select="handleSelect" router>
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-vertical-demo"
+      @select="handleSelect"
+      router
+      background-color="rgb(50, 65, 87)"
+      text-color="#fff"
+      active-text-color="rgb(32, 160, 255)"
+    >
       <template v-for="item in navMenuData">
         <el-menu-item :index="item.index" v-if="!item.child" :key="item.index">{{item.name}}</el-menu-item>
 
@@ -30,24 +38,30 @@ export default {
           child: [
             { index: "2-1", name: "选项1" },
             { index: "2-2", name: "选项2" },
-            { index: "2-3", name: "选项3" }
-          ]
-        }
-      ]
+            { index: "2-3", name: "选项3" },
+          ],
+        },
+      ],
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-    }
+    },
   },
   mounted() {
     console.log(this.activeIndex);
     console.log(this.$route.path);
     this.activeIndex = this.$route.path.substring(1, this.$route.path.length);
-  }
+  },
 };
 </script>
 
 <style scoped>
+.el-menu-item:hover {
+  background: rgb(40, 52, 70) !important;
+}
+.el-submenu__title:hover {
+  background: rgb(40, 52, 70) !important;
+}
 </style>

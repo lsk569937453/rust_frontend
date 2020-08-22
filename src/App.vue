@@ -1,15 +1,30 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-aside>
-        <NavMenu></NavMenu>
-      </el-aside>
-      <!-- <NavMenu></NavMenu> -->
+    <el-container style="height:100%">
+      <el-header>
+        <MainPageHeader></MainPageHeader>
+      </el-header>
 
-      <el-main>
+      <el-container>
+        <NavMenu style="height:100%" class="sideBar"></NavMenu>
+        <el-main>
+          <router-view></router-view>
+          <!--路由出口 -->
+        </el-main>
+      </el-container>
+      <!-- <el-aside>
+        <NavMenu style="height:100%"></NavMenu>
+      </el-aside>
+      <!-- <NavMenu></NavMenu>-->
+      <!-- <el-container>
+        <el-header>
+          <MainPageHeader></MainPageHeader>
+      </el-header>-->
+      <!-- <el-main>
         <router-view></router-view>
-        <!--路由出口 -->
-      </el-main>
+      <!--路由出口-->
+
+      <!-- </el-container> -->
     </el-container>
   </div>
 </template>
@@ -18,7 +33,8 @@
 import Subscription from "./components/Subscription";
 import MainPage from "./components/MainPage";
 import MainNewPage from "./components/MainNewPage";
-import NavMenu from "./components/main";
+import NavMenu from "./components/navMenu";
+import MainPageHeader from "./components/mainPageHeader";
 
 export default {
   name: "app",
@@ -27,6 +43,7 @@ export default {
     MainPage,
     MainNewPage,
     NavMenu,
+    MainPageHeader,
   },
 };
 </script>
@@ -46,5 +63,15 @@ body .el-table th.gutter {
 
 body .el-table colgroup.gutter {
   display: table-cell !important;
+}
+.el-menu-vertical-demo {
+  height: 100%;
+}
+.el-header {
+  padding: 0px !important;
+  background-color: #242f42;
+}
+.sideBar {
+  min-width: 250px;
 }
 </style>

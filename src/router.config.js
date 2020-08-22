@@ -26,7 +26,7 @@ export default {
             },
             {
                 path: "/mainPage",
-                component: () => import(/* webpackChunkName: "index" */ './components/main.vue'),
+                component: () => import(/* webpackChunkName: "index" */ './components/navMenu.vue'),
             }, {
                 path: "/taskhistory",
                 name: "taskhistory",
