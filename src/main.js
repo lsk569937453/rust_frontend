@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import JsonViewer from 'vue-json-viewer'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -12,7 +13,8 @@ import routerConfig from './router.config.js'
 
 Vue.use(VueRouter);
 Vue.prototype.$ajax = axios;
-Vue.use(ElementUI, {locale})
+Vue.use(ElementUI, { locale })
+Vue.use(JsonViewer)
 
 Vue.config.productionTip = false
 
@@ -22,6 +24,6 @@ var router = new VueRouter(routerConfig);
 new Vue({
     el: '#app',
     template: '<App/>',
-    components: {App},
+    components: { App },
     router: router,
 })

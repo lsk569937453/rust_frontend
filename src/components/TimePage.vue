@@ -55,7 +55,7 @@ export default {
       dialogVisible: false,
       cronExpressionInput: "",
       tashName: "",
-      tableData: []
+      tableData: [],
     };
   },
   mounted() {
@@ -65,9 +65,9 @@ export default {
     var self = this;
     // setInterval(getTotelNumber, 5000);
     let postJson = { user_id: "-1" };
-    Request.post("/api/task/get", postJson).then(response => {
+    Request.post("/api/task/getByUserId", postJson).then((response) => {
       let data = response.data;
-      if (data.res_code == 0) {
+      if (data.resCode == 0) {
         for (var item of data.message) {
           let taskName = item["task_name"];
           let taskCron = item["task_cron"];
@@ -79,7 +79,7 @@ export default {
             taskCron: taskCron,
             taskUrl: url,
             timestamp: timestamp,
-            id: id
+            id: id,
           };
           this.tableData.push(obj);
         }
@@ -99,6 +99,7 @@ export default {
   methods: {
     clickToHistory(row) {
       console.log("aaa", row);
+      this.$router.push({ name: "taskhistory", query: { taskId: row.id } });
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 === 0) {
@@ -120,15 +121,15 @@ export default {
         path: "/addTask", //跳转的路径
         query: {
           //路由传参时push和query搭配使用 ，作用时传递参数
-          fileCode: "fileCode"
-        }
+          fileCode: "fileCode",
+        },
       });
       Request.post("/api/addTask")
-        .then(response => {
+        .then((response) => {
           console.log(response);
           self.time = response.data;
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     },
@@ -140,16 +141,16 @@ export default {
 
     handleClose(done) {
       this.$confirm("确认关闭？")
-        .then(_ => {
+        .then((_) => {
           done();
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
       );
     },
     beforeRemove(file, fileList) {
@@ -162,7 +163,7 @@ export default {
           { fileCode: response.responseBody },
           { responseType: "blob" }
         )
-          .then(response => {
+          .then((response) => {
             var blob = new Blob([response.data]);
             var downloadElement = document.createElement("a");
             var href = window.URL.createObjectURL(blob); //创建下载的链接
@@ -183,18 +184,18 @@ export default {
               path: "/template", //跳转的路径
               query: {
                 //路由传参时push和query搭配使用 ，作用时传递参数
-                fileCode: fileCode
-              }
+                fileCode: fileCode,
+              },
             });
           })
-          .catch(response => {
+          .catch((response) => {
             console.log(response);
           });
       } else {
         console.log("项目添加失败");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

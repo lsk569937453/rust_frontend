@@ -29,6 +29,7 @@ export default {
                 component: () => import(/* webpackChunkName: "index" */ './components/main.vue'),
             }, {
                 path: "/taskhistory",
+                name: "taskhistory",
                 component: () => import(/* webpackChunkName: "index" */ './components/TaskHistory.vue'),
             }
         ]

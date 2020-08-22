@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-aside width="200px">
+      <el-aside>
         <NavMenu></NavMenu>
       </el-aside>
       <!-- <NavMenu></NavMenu> -->
@@ -26,8 +26,8 @@ export default {
     Subscription,
     MainPage,
     MainNewPage,
-    NavMenu
-  }
+    NavMenu,
+  },
 };
 </script>
 
