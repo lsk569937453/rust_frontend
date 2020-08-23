@@ -3,7 +3,7 @@ export default {
         [
             {
                 path: "/",
-                redirect: "/timePage",
+                redirect: "/loginPage",
             },
             {
                 path: '/',
