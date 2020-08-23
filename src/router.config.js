@@ -33,5 +33,10 @@ export default {
                 name: "taskhistory",
                 component: () => import(/* webpackChunkName: "index" */ './components/TaskHistory.vue'),
             },
+            {
+                path: "/loginPage",
+                name: "loginPage",
+                component: () => import(/* webpackChunkName: "index" */ './components/login.vue'),
+            }
         ]
 }

@@ -13,7 +13,7 @@
           <el-table-column fixed="right" label="操作" width="250">
             <template slot-scope="scope">
               <el-button
-                @click="editTaskShowDialog(scope.row)"
+                @click="editTaskShowDialog(scope.row,scope.$index)"
                 type="primary"
                 round
                 size="medium"
@@ -68,6 +68,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "taskPage",
+  inject: ["reload"],
   data() {
     return {
       time: "111",
@@ -79,6 +80,7 @@ export default {
         id: "",
         cron_expression: "",
         url: "",
+        rowIndex: "",
       },
       formLabelWidth: "120px",
       editDiagVisible: false,
@@ -125,14 +127,21 @@ export default {
   methods: {
     confirmEdit() {
       this.editDiagVisible = false;
-      const that = this;
-      var _location = window.location;
+
+      // var _location = window.location;
       Request.post("/api/task/updateById", this.editForm)
         .then((response) => {
           console.log(response);
-          if (response.data.resCode === 200) {
+          if (response.data.resCode === 0) {
+            this.reload();
             // that.$router.go(0);
-            that.$router.push({ name: "taskPage" });
+            // that.$router.push({ name: "taskPage" });
+            // let obj = {
+            //   taskUrl: this.editForm.url,
+            //   taskCron: this.editForm.cron_expression,
+            //   id: this.editForm.id,
+            // };
+            // this.tableData[this.editForm.index] = obj;
           }
         })
         .catch((response) => {
@@ -148,10 +157,11 @@ export default {
     //     },
     //   });
     // },
-    editTaskShowDialog(row) {
+    editTaskShowDialog(row, index) {
       this.editForm.url = row.taskUrl;
       this.editForm.cron_expression = row.taskCron;
       this.editForm.id = row.id;
+      this.editForm.index = index;
       this.editDiagVisible = true;
     },
     clickToHistory(row) {
