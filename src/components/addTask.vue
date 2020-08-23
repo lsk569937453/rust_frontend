@@ -53,7 +53,7 @@
 import Request from "../utils/axiosUtils";
 
 export default {
-  name: "UploadPage",
+  name: "addTaskPage",
   data() {
     return {
       time: "111",
@@ -111,7 +111,7 @@ export default {
         loading.close();
         this.$router.push({
           //核心语句
-          path: "/timePage", //跳转的路径
+          path: "/taskPage", //跳转的路径
         });
       }, 2000);
     },
@@ -134,6 +134,7 @@ export default {
       Request.post("/api/check/task", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
+        url: this.formLabelAlign.url,
       })
         .then((response) => {
           let data = response.data;
@@ -150,16 +151,18 @@ export default {
         });
     },
     addCronTask() {
-      Request.post("/api/add/task", {
+      Request.post("/api/task/add", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
+        url: this.formLabelAlign.url,
       })
         .then((response) => {
           let data = response.data;
-          if (data.res_code == -1) {
+          if (data.resCode == -1) {
             this.open1(data.message);
-          } else if (data.res_code == 0) {
+          } else if (data.resCode == 0) {
             this.openFullScreen1();
+
             //  this.checklog = data.message;
           }
           console.log(response);
