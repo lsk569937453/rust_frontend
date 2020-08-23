@@ -1,7 +1,31 @@
 <template>
   <div class="loginPage">
-    <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
-    sssss
+    <el-card class="box-card loginDiv">
+      <div slot="header" class="clearfix">
+        <span>任务管理系统</span>
+      </div>
+      <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
+        <el-form-item prop="username">
+          <el-input v-model="param.username" placeholder="username">
+            <el-button slot="prepend" icon="el-icon-user"></el-button>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            type="password"
+            placeholder="password"
+            v-model="param.password"
+            @keyup.enter.native="submitForm()"
+          >
+            <el-button slot="prepend" icon="el-icon-lock"></el-button>
+          </el-input>
+        </el-form-item>
+        <div class="login-btn">
+          <el-button type="primary" @click="submitForm()">登录</el-button>
+        </div>
+        <p class="login-tips">Tips : 用户名和密码随便填。</p>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
@@ -12,67 +36,23 @@ export default {
   name: "login",
   data() {
     return {
-      tableData: [],
-      currentPage: 1,
-      pagesize: 10,
-      total: 0,
-      loading: true,
-      dialogVisible: false,
-      dialogDetailMessage: "",
+      param: {
+        username: "admin",
+        password: "123123",
+      },
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      },
     };
   },
 
-  mounted() {
-    let taskId = Number.parseInt(this.$route.query.taskId);
-
-    let jsonData = { task_id: taskId };
-    let taskjson = { id: taskId };
-    let historyF = Request.post("/api/taskHistory/getByTaskId", jsonData);
-    let taskF = Request.post("/api/task/getById", taskjson);
-    Request.all([historyF, taskF]).then(
-      Request.spread((res1, res2) => {
-        this.total = res1.data.message.length;
-        console.log("a", res1);
-        console.log("b", res2);
-        if (res1.data.resCode == 0 && res2.data.resCode == 0) {
-          let task_url = res2.data.message[0]["url"];
-          for (var item of res1.data.message) {
-            let execTime = item["exec_time"];
-            let lastIndex = execTime.lastIndexOf("-");
-
-            let newExecTime =
-              execTime.substr(0, lastIndex) +
-              " " +
-              execTime.substr(lastIndex + 1, execTime.length);
-
-            let execResult = item["exec_result"];
-            let execCode = item["exec_code"];
-            let timestamp = item["_timestamp"];
-            let obj = {
-              execTime: newExecTime,
-              execResult: execResult,
-              execCode: execCode,
-              task_url: task_url,
-              dateTime: timestamp,
-            };
-            this.tableData.push(obj);
-            this.loading = false;
-          }
-        }
-      })
-    );
-  },
+  mounted() {},
   methods: {
-    clickToHistory(row) {
-      console.log(row);
-      this.dialogDetailMessage = row.execResult;
-      this.dialogVisible = true;
-    },
-    handleSizeChange(val) {
-      this.pagesize = val;
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val;
+    submitForm() {
+      this.$router.push({ name: "taskPage" });
     },
   },
 };
@@ -85,5 +65,20 @@ export default {
   height: 100%;
   background-image: url(../../static/login-bg.jpg);
   background-size: 100%;
+}
+.loginDiv {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 350px;
+  margin: -190px 0 0 -175px;
+  border-radius: 5px;
+  background: hsla(0, 0%, 100%, 0.3);
+  overflow: hidden;
+}
+.login-btn button {
+  width: 100%;
+  height: 36px;
+  margin-bottom: 10px;
 }
 </style>

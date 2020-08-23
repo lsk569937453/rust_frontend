@@ -31,16 +31,16 @@ export default {
       activeIndex: "taskPage",
       navMenuData: [
         { index: "taskPage", name: "任务列表" },
-        { index: "taskhistory", name: "任务历史" },
-        {
-          index: "2",
-          name: "我的工作台",
-          child: [
-            { index: "2-1", name: "选项1" },
-            { index: "2-2", name: "选项2" },
-            { index: "2-3", name: "选项3" },
-          ],
-        },
+        // { index: "taskhistory", name: "任务历史" },
+        // {
+        //   index: "2",
+        //   name: "我的工作台",
+        //   child: [
+        //     { index: "2-1", name: "选项1" },
+        //     { index: "2-2", name: "选项2" },
+        //     { index: "2-3", name: "选项3" },
+        //   ],
+        // },
       ],
     };
   },

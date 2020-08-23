@@ -1,15 +1,40 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <el-container style="height:100%">
+      <el-header>
+        <MainPageHeader></MainPageHeader>
+      </el-header>
+
+      <el-container>
+        <NavMenu style="height:100%" class="sideBar"></NavMenu>
+        <el-main>
+          <router-view v-if="isRouterAlive"></router-view>
+          <!--路由出口 -->
+        </el-main>
+      </el-container>
+      <!-- <el-aside>
+        <NavMenu style="height:100%"></NavMenu>
+      </el-aside>
+      <!-- <NavMenu></NavMenu>-->
+      <!-- <el-container>
+        <el-header>
+          <MainPageHeader></MainPageHeader>
+      </el-header>-->
+      <!-- <el-main>
+        <router-view></router-view>
+      <!--路由出口-->
+
+      <!-- </el-container> -->
+    </el-container>
   </div>
 </template>
 
 <script>
-import NavMenu from "./components/navMenu";
-import MainPageHeader from "./components/mainPageHeader";
+import NavMenu from "./navMenu";
+import MainPageHeader from "./mainPageHeader";
 
 export default {
-  name: "app",
+  name: "home",
   components: {
     NavMenu,
     MainPageHeader,
