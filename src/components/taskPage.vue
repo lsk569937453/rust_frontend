@@ -12,7 +12,12 @@
           <el-table-column prop="taskUrl" label="调用的url"></el-table-column>
           <el-table-column fixed="right" label="操作" width="250">
             <template slot-scope="scope">
-              <el-button @click="clickToHistory(scope.row)" type="primary" round size="medium">编辑</el-button>
+              <el-button
+                @click="editTaskShowDialog(scope.row)"
+                type="primary"
+                round
+                size="medium"
+              >编辑</el-button>
 
               <el-button @click="clickToHistory(scope.row)" type="primary" round size="medium">查看历史</el-button>
             </template>
@@ -41,6 +46,20 @@
         </template>
       </el-card>
     </el-dialog>
+    <el-dialog title="编辑" :visible.sync="editDiagVisible">
+      <el-form :model="editForm">
+        <el-form-item label="cron表达式" :label-width="formLabelWidth">
+          <el-input v-model="editForm.cron_expression" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="url名称" :label-width="formLabelWidth">
+          <el-input v-model="editForm.url" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editDiagVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmEdit">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-main>
 </template>
 
@@ -48,7 +67,7 @@
 import Request from "../utils/axiosUtils";
 
 export default {
-  name: "UploadPage",
+  name: "taskPage",
   data() {
     return {
       time: "111",
@@ -56,12 +75,19 @@ export default {
       cronExpressionInput: "",
       tashName: "",
       tableData: [],
+      editForm: {
+        id: "",
+        cron_expression: "",
+        url: "",
+      },
+      formLabelWidth: "120px",
+      editDiagVisible: false,
     };
   },
   mounted() {
-    document
-      .querySelector("body")
-      .setAttribute("style", "background-color:#f0f0f0");
+    // document
+    //   .querySelector("body")
+    //   .setAttribute("style", "background-color:#f0f0f0");
     var self = this;
     // setInterval(getTotelNumber, 5000);
     let postJson = { user_id: "-1" };
@@ -97,6 +123,37 @@ export default {
     // }
   },
   methods: {
+    confirmEdit() {
+      this.editDiagVisible = false;
+      const that = this;
+      var _location = window.location;
+      Request.post("/api/task/updateById", this.editForm)
+        .then((response) => {
+          console.log(response);
+          if (response.data.resCode === 200) {
+            // that.$router.go(0);
+            that.$router.push({ name: "taskPage" });
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    },
+
+    // refresh() {
+    //   this.$router.replace({
+    //     path: "/refresh",
+    //     query: {
+    //       t: Date.now(),
+    //     },
+    //   });
+    // },
+    editTaskShowDialog(row) {
+      this.editForm.url = row.taskUrl;
+      this.editForm.cron_expression = row.taskCron;
+      this.editForm.id = row.id;
+      this.editDiagVisible = true;
+    },
     clickToHistory(row) {
       console.log("aaa", row);
       this.$router.push({ name: "taskhistory", query: { taskId: row.id } });

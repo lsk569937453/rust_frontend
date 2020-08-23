@@ -18,8 +18,9 @@ export default {
                 component: () => import(/* webpackChunkName: "index" */ './components/TemplatePage.vue'),
             },
             {
-                path: "/timePage",
-                component: () => import(/* webpackChunkName: "index" */ './components/TimePage.vue'),
+                path: "/taskPage",
+                name: "taskPage",
+                component: () => import(/* webpackChunkName: "index" */ './components/taskPage.vue'),
             }, {
                 path: "/addTask",
                 component: () => import(/* webpackChunkName: "index" */ './components/addTask.vue'),
@@ -31,6 +32,6 @@ export default {
                 path: "/taskhistory",
                 name: "taskhistory",
                 component: () => import(/* webpackChunkName: "index" */ './components/TaskHistory.vue'),
-            }
+            },
         ]
 }

@@ -28,9 +28,9 @@ export default {
   name: "NavMenu",
   data() {
     return {
-      activeIndex: "timePage",
+      activeIndex: "taskPage",
       navMenuData: [
-        { index: "timePage", name: "任务列表" },
+        { index: "taskPage", name: "任务列表" },
         { index: "taskhistory", name: "任务历史" },
         {
           index: "2",

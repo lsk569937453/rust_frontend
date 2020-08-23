@@ -64,33 +64,33 @@ export default {
       formLabelAlign: {
         taskName: "",
         cronExpressionInput: "",
-        url: ""
+        url: "",
       },
       rules: {
         taskName: [
-          { required: true, message: "请输入活动名称", trigger: "blur" }
+          { required: true, message: "请输入活动名称", trigger: "blur" },
         ],
         cronExpressionInput: [
-          { required: true, message: "请输入cron表达式", trigger: "blur" }
+          { required: true, message: "请输入cron表达式", trigger: "blur" },
         ],
-        url: [{ required: true, message: "请输入url", trigger: "blur" }]
-      }
+        url: [{ required: true, message: "请输入url", trigger: "blur" }],
+      },
     };
   },
 
   mounted() {
-    document
-      .querySelector("body")
-      .setAttribute("style", "background-color:#C0C4CC");
+    // document
+    //   .querySelector("body")
+    //   .setAttribute("style", "background-color:#C0C4CC");
     var self = this;
     // setInterval(getTotelNumber, 5000);
     function getTotelNumber() {
       Request.get("/api/world")
-        .then(response => {
+        .then((response) => {
           console.log(response);
           self.time = response.data;
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     }
@@ -105,13 +105,13 @@ export default {
         lock: true,
         text: "添加任务成功，正在跳转",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       setTimeout(() => {
         loading.close();
         this.$router.push({
           //核心语句
-          path: "/timePage" //跳转的路径
+          path: "/timePage", //跳转的路径
         });
       }, 2000);
     },
@@ -121,7 +121,7 @@ export default {
 
       this.$notify({
         title: "error message",
-        message: h("i", { style: "color: red" }, msg)
+        message: h("i", { style: "color: red" }, msg),
       });
     },
     handleRemove(file, fileList) {
@@ -133,9 +133,9 @@ export default {
     checkCron() {
       Request.post("/api/check/task", {
         name: this.formLabelAlign.taskName,
-        cron_expression: this.formLabelAlign.cronExpressionInput
+        cron_expression: this.formLabelAlign.cronExpressionInput,
       })
-        .then(response => {
+        .then((response) => {
           let data = response.data;
           if (data.res_code == -1) {
             this.open1(data.message);
@@ -145,16 +145,16 @@ export default {
           console.log(response);
           self.time = response.data;
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     },
     addCronTask() {
       Request.post("/api/add/task", {
         name: this.formLabelAlign.taskName,
-        cron_expression: this.formLabelAlign.cronExpressionInput
+        cron_expression: this.formLabelAlign.cronExpressionInput,
       })
-        .then(response => {
+        .then((response) => {
           let data = response.data;
           if (data.res_code == -1) {
             this.open1(data.message);
@@ -165,28 +165,28 @@ export default {
           console.log(response);
           self.time = response.data;
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     },
 
     handleClose(done) {
       this.$confirm("确认关闭？")
-        .then(_ => {
+        .then((_) => {
           done();
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
       );
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    } //文件上传成功时的钩子
+    }, //文件上传成功时的钩子
     // upLoadSuccess(response, file, fileList) {
     //   if (response.responseCode === 0) {
     //     Request.post(
@@ -226,7 +226,7 @@ export default {
     //     console.log("项目添加失败");
     //   }
     // }
-  }
+  },
 };
 </script>
 
