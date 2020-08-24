@@ -92,8 +92,9 @@ export default {
               dateTime: timestamp,
             };
             this.tableData.push(obj);
-            this.loading = false;
           }
+          this.loading = false;
+
         }
       })
     );

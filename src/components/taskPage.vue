@@ -1,63 +1,94 @@
 <template>
   <el-main style="height:100%">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-button style="float: left; padding: 3px 0" type="text" @click="addCronTask">添加定时任务</el-button>
+      <div slot="header"
+           class="clearfix">
+        <el-button style="float: left; padding: 3px 0"
+                   type="text"
+                   @click="addCronTask">添加定时任务</el-button>
         <span>任务列表</span>
       </div>
       <template>
-        <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
-          <el-table-column prop="timestamp" label="日期" width="180"></el-table-column>
-          <el-table-column prop="taskCron" label="cron表达式" width="180"></el-table-column>
-          <el-table-column prop="taskUrl" label="调用的url"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="250">
+        <el-table :data="tableData"
+                  style="width: 100%"
+                  :row-class-name="tableRowClassName">
+          <el-table-column prop="timestamp"
+                           label="日期"
+                           width="180"></el-table-column>
+          <el-table-column prop="taskCron"
+                           label="cron表达式"
+                           width="180"></el-table-column>
+          <el-table-column prop="taskUrl"
+                           label="调用的url"></el-table-column>
+          <el-table-column fixed="right"
+                           label="操作"
+                           width="250"
+                           align="center">
             <template slot-scope="scope">
-              <el-button
-                @click="editTaskShowDialog(scope.row,scope.$index)"
-                type="primary"
-                round
-                size="medium"
-              >编辑</el-button>
+              <el-button @click="editTaskShowDialog(scope.row,scope.$index)"
+                         type="text"
+                         icon="el-icon-edit"
+                         size="medium">编辑</el-button>
 
-              <el-button @click="clickToHistory(scope.row)" type="primary" round size="medium">查看历史</el-button>
+              <el-button @click="clickToHistory(scope.row)"
+                         type="text"
+                         icon="el-icon-tickets"
+                         size="medium">查看历史</el-button>
+
+              <el-button @click="handleDelete(scope.row)"
+                         type="text"
+                         icon="el-icon-delete"
+                         size="medium"
+                         class="red">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
     </el-card>
-    <el-dialog title="添加定时任务" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <el-dialog title="添加定时任务"
+               :visible.sync="dialogVisible"
+               width="30%"
+               :before-close="handleClose">
       <el-card class="box-card">
         <template>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-input
-                placeholder="cron表达式"
-                suffix-icon="el-icon-date"
-                v-model="cronExpressionInput"
-              ></el-input>
+              <el-input placeholder="cron表达式"
+                        suffix-icon="el-icon-date"
+                        v-model="cronExpressionInput"></el-input>
             </el-col>
             <el-col :span="12">
-              <el-input placeholder="任务名称" suffix-icon="el-icon-date" v-model="tashName"></el-input>
+              <el-input placeholder="任务名称"
+                        suffix-icon="el-icon-date"
+                        v-model="tashName"></el-input>
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-button type="primary" @click="addCronTask">添加任务</el-button>
+            <el-button type="primary"
+                       @click="addCronTask">添加任务</el-button>
           </el-row>
         </template>
       </el-card>
     </el-dialog>
-    <el-dialog title="编辑" :visible.sync="editDiagVisible">
+    <el-dialog title="编辑"
+               :visible.sync="editDiagVisible">
       <el-form :model="editForm">
-        <el-form-item label="cron表达式" :label-width="formLabelWidth">
-          <el-input v-model="editForm.cron_expression" autocomplete="off"></el-input>
+        <el-form-item label="cron表达式"
+                      :label-width="formLabelWidth">
+          <el-input v-model="editForm.cron_expression"
+                    autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="url名称" :label-width="formLabelWidth">
-          <el-input v-model="editForm.url" autocomplete="off"></el-input>
+        <el-form-item label="url名称"
+                      :label-width="formLabelWidth">
+          <el-input v-model="editForm.url"
+                    autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer"
+           class="dialog-footer">
         <el-button @click="editDiagVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmEdit">确 定</el-button>
+        <el-button type="primary"
+                   @click="confirmEdit">确 定</el-button>
       </div>
     </el-dialog>
   </el-main>
@@ -69,7 +100,7 @@ import Request from "../utils/axiosUtils";
 export default {
   name: "taskPage",
   inject: ["reload"],
-  data() {
+  data () {
     return {
       time: "111",
       dialogVisible: false,
@@ -86,7 +117,7 @@ export default {
       editDiagVisible: false,
     };
   },
-  mounted() {
+  mounted () {
     // document
     //   .querySelector("body")
     //   .setAttribute("style", "background-color:#f0f0f0");
@@ -125,7 +156,7 @@ export default {
     // }
   },
   methods: {
-    confirmEdit() {
+    confirmEdit () {
       this.editDiagVisible = false;
 
       // var _location = window.location;
@@ -149,26 +180,40 @@ export default {
         });
     },
 
-    // refresh() {
-    //   this.$router.replace({
-    //     path: "/refresh",
-    //     query: {
-    //       t: Date.now(),
-    //     },
-    //   });
-    // },
-    editTaskShowDialog(row, index) {
+    handleDelete (row) {
+      // 二次确认删除
+      this.$confirm('确定要删除吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          let obj = { "id": row.id }
+          Request.post("/api/task/delById", obj)
+            .then((response) => {
+              console.log(response);
+              this.$message.success('删除成功');
+              this.reload();
+            })
+            .catch((response) => {
+              console.log(response);
+            });
+
+        })
+        .catch(() => { });
+    },
+    editTaskShowDialog (row, index) {
       this.editForm.url = row.taskUrl;
       this.editForm.cron_expression = row.taskCron;
       this.editForm.id = row.id;
       this.editForm.index = index;
       this.editDiagVisible = true;
     },
-    clickToHistory(row) {
+    clickToHistory (row) {
       console.log("aaa", row);
       this.$router.push({ name: "taskhistory", query: { taskId: row.id } });
     },
-    tableRowClassName({ row, rowIndex }) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex % 2 === 0) {
         return "warning-row";
       } else if (rowIndex % 2 === 1) {
@@ -176,13 +221,8 @@ export default {
       }
       return "";
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    addCronTask() {
+
+    addCronTask () {
       this.$router.push({
         //核心语句
         path: "/addTask", //跳转的路径
@@ -201,68 +241,15 @@ export default {
         });
     },
 
-    //测试函数
-    test() {
-      console.log("a");
-    },
-
-    handleClose(done) {
+    handleClose (done) {
       this.$confirm("确认关闭？")
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
-        } 个文件`
-      );
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    }, //文件上传成功时的钩子
-    upLoadSuccess(response, file, fileList) {
-      if (response.responseCode === 0) {
-        Request.post(
-          "/api/writeAllTemplateData",
-          { fileCode: response.responseBody },
-          { responseType: "blob" }
-        )
-          .then((response) => {
-            var blob = new Blob([response.data]);
-            var downloadElement = document.createElement("a");
-            var href = window.URL.createObjectURL(blob); //创建下载的链接
-            downloadElement.href = href;
-            downloadElement.download = "用户数据.pdf"; //下载后文件名
-            document.body.appendChild(downloadElement);
-            downloadElement.click(); //点击下载
-            document.body.removeChild(downloadElement); //下载完成移除元素
-            window.URL.revokeObjectURL(href); //释放掉blob对象
 
-            console.log(response);
-          })
-          .then(() => {
-            console.log(response + "已上传" + file);
-            var fileCode = response.responseBody;
-            this.$router.push({
-              //核心语句
-              path: "/template", //跳转的路径
-              query: {
-                //路由传参时push和query搭配使用 ，作用时传递参数
-                fileCode: fileCode,
-              },
-            });
-          })
-          .catch((response) => {
-            console.log(response);
-          });
-      } else {
-        console.log("项目添加失败");
-      }
-    },
-  },
+  }
 };
 </script>
 
@@ -277,5 +264,8 @@ export default {
 
 .el-table .success-row {
   background: #f0f9eb;
+}
+.red {
+  color: #ff0000;
 }
 </style>
