@@ -1,21 +1,29 @@
 <template>
   <el-main>
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>添加任务</span>
+      <div slot="header"
+           class="clearfix">
+        <span>addTask</span>
       </div>
       <template>
-        <el-form :rules="rules" label-width="100px" :model="formLabelAlign" label-position="right">
+        <el-form :rules="rules"
+                 label-width="100px"
+                 :model="formLabelAlign"
+                 label-position="right">
           <el-row>
-            <el-form-item label="名称" prop="taskName">
+            <el-form-item label="名称"
+                          prop="taskName">
               <el-input v-model="formLabelAlign.taskName"></el-input>
             </el-form-item>
-            <el-form-item label="cron表达式" prop="cronExpressionInput">
+            <el-form-item label="cron表达式"
+                          prop="cronExpressionInput">
               <el-col :span="22">
-                <el-input v-model="formLabelAlign.cronExpressionInput" :xs="8"></el-input>
+                <el-input v-model="formLabelAlign.cronExpressionInput"
+                          :xs="8"></el-input>
               </el-col>
               <el-col :span="2">
-                <el-button type="primary" @click="checkCron">检验表达式</el-button>
+                <el-button type="primary"
+                           @click="checkCron">检验表达式</el-button>
               </el-col>
             </el-form-item>
             <!-- <el-form-item label="method" prop="httpMethod">
@@ -24,11 +32,13 @@
               <el-option label="区域二" value="beijing"></el-option>
             </el-select>
             </el-form-item>-->
-            <el-form-item label="url" prop="url">
+            <el-form-item label="url"
+                          prop="url">
               <el-input v-model="formLabelAlign.url"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addCronTask">立即创建</el-button>
+              <el-button type="primary"
+                         @click="addCronTask">立即创建</el-button>
               <el-button>取消</el-button>
             </el-form-item>
           </el-row>
@@ -39,11 +49,13 @@
     <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
 
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header"
+           class="clearfix">
         <span>定时任务执行列表</span>
       </div>
       <template>
-        <div v-for="(item,i) in checklog" :key="i">{{item}}</div>
+        <div v-for="(item,i) in checklog"
+             :key="i">{{item}}</div>
       </template>
     </el-card>
   </el-main>
@@ -54,7 +66,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "addTaskPage",
-  data() {
+  data () {
     return {
       time: "111",
       dialogVisible: false,
@@ -78,13 +90,13 @@ export default {
     };
   },
 
-  mounted() {
+  mounted () {
     // document
     //   .querySelector("body")
     //   .setAttribute("style", "background-color:#C0C4CC");
     var self = this;
     // setInterval(getTotelNumber, 5000);
-    function getTotelNumber() {
+    function getTotelNumber () {
       Request.get("/api/world")
         .then((response) => {
           console.log(response);
@@ -96,10 +108,10 @@ export default {
     }
   },
   methods: {
-    beforeDestroy() {
+    beforeDestroy () {
       document.querySelector("body").removeAttribute("style");
     },
-    openFullScreen1() {
+    openFullScreen1 () {
       this.fullscreenLoading = true;
       const loading = this.$loading({
         lock: true,
@@ -116,7 +128,7 @@ export default {
       }, 2000);
     },
 
-    open1(msg) {
+    open1 (msg) {
       const h = this.$createElement;
 
       this.$notify({
@@ -124,13 +136,13 @@ export default {
         message: h("i", { style: "color: red" }, msg),
       });
     },
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
       console.log(file, fileList);
     },
-    handlePreview(file) {
+    handlePreview (file) {
       console.log(file);
     },
-    checkCron() {
+    checkCron () {
       Request.post("/api/check/task", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
@@ -150,7 +162,7 @@ export default {
           console.log(response);
         });
     },
-    addCronTask() {
+    addCronTask () {
       Request.post("/api/task/add", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
@@ -173,21 +185,21 @@ export default {
         });
     },
 
-    handleClose(done) {
+    handleClose (done) {
       this.$confirm("确认关闭？")
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       this.$message.warning(
         `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
+        files.length + fileList.length
         } 个文件`
       );
     },
-    beforeRemove(file, fileList) {
+    beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }, //文件上传成功时的钩子
     // upLoadSuccess(response, file, fileList) {
