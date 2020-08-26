@@ -1,29 +1,37 @@
 <template>
   <div class="loginPage">
     <el-card class="box-card loginDiv">
-      <div slot="header" class="clearfix">
-        <span>任务管理系统</span>
+      <div slot="header"
+           class="clearfix">
+        <span>Task Management System
+        </span>
       </div>
-      <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
+      <el-form :model="param"
+               :rules="rules"
+               ref="login"
+               label-width="0px"
+               class="ms-content">
         <el-form-item prop="username">
-          <el-input v-model="param.username" placeholder="username">
-            <el-button slot="prepend" icon="el-icon-user"></el-button>
+          <el-input v-model="param.username"
+                    placeholder="username">
+            <el-button slot="prepend"
+                       icon="el-icon-user"></el-button>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input
-            type="password"
-            placeholder="password"
-            v-model="param.password"
-            @keyup.enter.native="submitForm()"
-          >
-            <el-button slot="prepend" icon="el-icon-lock"></el-button>
+          <el-input type="password"
+                    placeholder="password"
+                    v-model="param.password"
+                    @keyup.enter.native="submitForm()">
+            <el-button slot="prepend"
+                       icon="el-icon-lock"></el-button>
           </el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="submitForm()">登录</el-button>
+          <el-button type="primary"
+                     @click="submitForm()">Sign In</el-button>
         </div>
-        <p class="login-tips">Tips : 用户名和密码随便填。</p>
+        <p class="login-tips">Tips : Fill in the user name and password randomly</p>
       </el-form>
     </el-card>
   </div>
@@ -34,7 +42,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "login",
-  data() {
+  data () {
     return {
       param: {
         username: "admin",
@@ -49,9 +57,9 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted () { },
   methods: {
-    submitForm() {
+    submitForm () {
       this.$router.push({ name: "taskPage" });
     },
   },
