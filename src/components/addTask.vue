@@ -11,11 +11,11 @@
                  :model="formLabelAlign"
                  label-position="right">
           <el-row>
-            <el-form-item label="名称"
+            <el-form-item label="task name"
                           prop="taskName">
               <el-input v-model="formLabelAlign.taskName"></el-input>
             </el-form-item>
-            <el-form-item label="cron表达式"
+            <el-form-item label="cron expression"
                           prop="cronExpressionInput">
               <el-col :span="22">
                 <el-input v-model="formLabelAlign.cronExpressionInput"
@@ -23,7 +23,7 @@
               </el-col>
               <el-col :span="2">
                 <el-button type="primary"
-                           @click="checkCron">检验表达式</el-button>
+                           @click="checkCron">CheckExpression</el-button>
               </el-col>
             </el-form-item>
             <!-- <el-form-item label="method" prop="httpMethod">
@@ -38,8 +38,8 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary"
-                         @click="addCronTask">立即创建</el-button>
-              <el-button>取消</el-button>
+                         @click="addCronTask">create</el-button>
+              <el-button>cancal</el-button>
             </el-form-item>
           </el-row>
         </el-form>
@@ -51,7 +51,8 @@
     <el-card class="box-card">
       <div slot="header"
            class="clearfix">
-        <span>定时任务执行列表</span>
+        <span>Scheduled task execution list
+        </span>
       </div>
       <template>
         <div v-for="(item,i) in checklog"
@@ -115,7 +116,7 @@ export default {
       this.fullscreenLoading = true;
       const loading = this.$loading({
         lock: true,
-        text: "添加任务成功，正在跳转",
+        text: "Task added successfully,Jumping",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });

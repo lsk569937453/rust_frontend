@@ -1,40 +1,53 @@
 <template>
   <el-main>
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>任务历史</span>
+      <div slot="header"
+           class="clearfix">
+        <span>Task History</span>
       </div>
       <template>
-        <el-table
-          v-loading="loading"
-          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-          style="width: 100%"
-        >
-          <el-table-column prop="dateTime" label="日期" sortable width="180"></el-table-column>
-          <el-table-column prop="execTime" label="执行时间" sortable width="180"></el-table-column>
-          <el-table-column prop="task_url" label="url"></el-table-column>
+        <el-table v-loading="loading"
+                  :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                  style="width: 100%">
+          <el-table-column prop="dateTime"
+                           label="Date"
+                           sortable
+                           width="180"></el-table-column>
+          <el-table-column prop="execTime"
+                           label="Execution Time"
+                           sortable
+                           width="180"></el-table-column>
+          <el-table-column prop="task_url"
+                           label="Url"></el-table-column>
           <!-- <el-table-column prop="execResult" label="执行结果" width="600"></el-table-column> -->
-          <el-table-column prop="execCode" label="返回码"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="250">
+          <el-table-column prop="execCode"
+                           label="Response Code"></el-table-column>
+          <el-table-column fixed="right"
+                           label="Response Body"
+                           width="250">
             <template slot-scope="scope">
-              <el-button @click="clickToHistory(scope.row)" type="text" round size="medium">详情</el-button>
+              <el-button @click="clickToHistory(scope.row)"
+                         type="text"
+                         round
+                         size="medium">Detail</el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="pagination">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :page-sizes="[10, 15, 20]"
-            :page-size="pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-          ></el-pagination>
+          <el-pagination @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         :page-sizes="[10, 15, 20]"
+                         :page-size="pagesize"
+                         layout="total, sizes, prev, pager, next, jumper"
+                         :total="total"></el-pagination>
         </div>
       </template>
     </el-card>
-    <el-dialog title="返回值" :visible.sync="dialogVisible">
-      <json-viewer :value="dialogDetailMessage" :expand-depth="4" sort></json-viewer>
+    <el-dialog title="返回值"
+               :visible.sync="dialogVisible">
+      <json-viewer :value="dialogDetailMessage"
+                   :expand-depth="4"
+                   sort></json-viewer>
     </el-dialog>
 
     <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
@@ -46,7 +59,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "TasskHistory",
-  data() {
+  data () {
     return {
       tableData: [],
       currentPage: 1,
@@ -58,7 +71,7 @@ export default {
     };
   },
 
-  mounted() {
+  mounted () {
     let taskId = Number.parseInt(this.$route.query.taskId);
 
     let jsonData = { task_id: taskId };
@@ -123,15 +136,15 @@ export default {
     // });
   },
   methods: {
-    clickToHistory(row) {
+    clickToHistory (row) {
       console.log(row);
       this.dialogDetailMessage = row.execResult;
       this.dialogVisible = true;
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.pagesize = val;
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.currentPage = val;
     },
   },

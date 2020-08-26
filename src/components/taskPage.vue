@@ -5,21 +5,21 @@
            class="clearfix">
         <el-button style="float: left; padding: 3px 0"
                    type="text"
-                   @click="addCronTask">添加定时任务</el-button>
-        <span>任务列表</span>
+                   @click="addCronTask">Add Schedule Task</el-button>
+        <span>Task List</span>
       </div>
       <template>
         <el-table :data="tableData"
                   style="width: 100%"
                   :row-class-name="tableRowClassName">
           <el-table-column prop="timestamp"
-                           label="日期"
+                           label="Date"
                            width="180"></el-table-column>
           <el-table-column prop="taskCron"
-                           label="cron表达式"
+                           label="Cron  Expression"
                            width="180"></el-table-column>
           <el-table-column prop="taskUrl"
-                           label="调用的url"></el-table-column>
+                           label="Url"></el-table-column>
           <el-table-column fixed="right"
                            label="操作"
                            width="250"
@@ -28,24 +28,24 @@
               <el-button @click="editTaskShowDialog(scope.row,scope.$index)"
                          type="text"
                          icon="el-icon-edit"
-                         size="medium">编辑</el-button>
+                         size="medium">edit</el-button>
 
               <el-button @click="clickToHistory(scope.row)"
                          type="text"
                          icon="el-icon-tickets"
-                         size="medium">查看历史</el-button>
+                         size="medium">task history</el-button>
 
               <el-button @click="handleDelete(scope.row)"
                          type="text"
                          icon="el-icon-delete"
                          size="medium"
-                         class="red">删除</el-button>
+                         class="red">delete</el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
     </el-card>
-    <el-dialog title="添加定时任务"
+    <el-dialog title="Add Scheduled Task"
                :visible.sync="dialogVisible"
                width="30%"
                :before-close="handleClose">
@@ -53,32 +53,32 @@
         <template>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-input placeholder="cron表达式"
+              <el-input placeholder="Cron Expression"
                         suffix-icon="el-icon-date"
                         v-model="cronExpressionInput"></el-input>
             </el-col>
             <el-col :span="12">
-              <el-input placeholder="任务名称"
+              <el-input placeholder="TaskName"
                         suffix-icon="el-icon-date"
                         v-model="tashName"></el-input>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-button type="primary"
-                       @click="addCronTask">添加任务</el-button>
+                       @click="addCronTask">Add New Task</el-button>
           </el-row>
         </template>
       </el-card>
     </el-dialog>
-    <el-dialog title="编辑"
+    <el-dialog title="Edit"
                :visible.sync="editDiagVisible">
       <el-form :model="editForm">
-        <el-form-item label="cron表达式"
+        <el-form-item label="Cron Expression"
                       :label-width="formLabelWidth">
           <el-input v-model="editForm.cron_expression"
                     autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="url名称"
+        <el-form-item label="Url"
                       :label-width="formLabelWidth">
           <el-input v-model="editForm.url"
                     autocomplete="off"></el-input>
@@ -86,9 +86,9 @@
       </el-form>
       <div slot="footer"
            class="dialog-footer">
-        <el-button @click="editDiagVisible = false">取 消</el-button>
+        <el-button @click="editDiagVisible = false">cancel</el-button>
         <el-button type="primary"
-                   @click="confirmEdit">确 定</el-button>
+                   @click="confirmEdit">Ok</el-button>
       </div>
     </el-dialog>
   </el-main>
@@ -182,9 +182,9 @@ export default {
 
     handleDelete (row) {
       // 二次确认删除
-      this.$confirm('确定要删除吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Are you sure you want to delete it？', 'Tips', {
+        confirmButtonText: 'Ok',
+        cancelButtonText: 'cancel',
         type: 'warning'
       })
         .then(() => {
@@ -192,7 +192,7 @@ export default {
           Request.post("/api/task/delById", obj)
             .then((response) => {
               console.log(response);
-              this.$message.success('删除成功');
+              this.$message.success('delete success');
               this.reload();
             })
             .catch((response) => {
