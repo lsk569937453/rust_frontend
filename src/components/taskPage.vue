@@ -5,7 +5,10 @@
            class="clearfix">
         <el-button style="float: left; padding: 3px 0"
                    type="text"
-                   @click="addCronTask">Add Schedule Task</el-button>
+                   @click="addCronTask">Add HTTP Schedule Task</el-button>
+        <el-button style="float: left; padding: 3px 0"
+                   type="text"
+                   @click="addGrpcCronTask">Add Grpc Schedule Task</el-button>
         <span>Task List</span>
       </div>
       <template>
@@ -45,31 +48,7 @@
         </el-table>
       </template>
     </el-card>
-    <el-dialog title="Add Scheduled Task"
-               :visible.sync="dialogVisible"
-               width="30%"
-               :before-close="handleClose">
-      <el-card class="box-card">
-        <template>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-input placeholder="Cron Expression"
-                        suffix-icon="el-icon-date"
-                        v-model="cronExpressionInput"></el-input>
-            </el-col>
-            <el-col :span="12">
-              <el-input placeholder="TaskName"
-                        suffix-icon="el-icon-date"
-                        v-model="tashName"></el-input>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-button type="primary"
-                       @click="addCronTask">Add New Task</el-button>
-          </el-row>
-        </template>
-      </el-card>
-    </el-dialog>
+
     <el-dialog title="Edit"
                :visible.sync="editDiagVisible">
       <el-form :model="editForm">
@@ -103,7 +82,6 @@ export default {
   data () {
     return {
       time: "111",
-      dialogVisible: false,
       cronExpressionInput: "",
       tashName: "",
       tableData: [],
@@ -144,16 +122,7 @@ export default {
         }
       }
     });
-    // function getTotelNumber() {
-    //   Request.get("/api/world")
-    //     .then(response => {
-    //       console.log(response);
-    //       self.time = response.data;
-    //     })
-    //     .catch(response => {
-    //       console.log(response);
-    //     });
-    // }
+
   },
   methods: {
     confirmEdit () {
@@ -165,14 +134,7 @@ export default {
           console.log(response);
           if (response.data.resCode === 0) {
             this.reload();
-            // that.$router.go(0);
-            // that.$router.push({ name: "taskPage" });
-            // let obj = {
-            //   taskUrl: this.editForm.url,
-            //   taskCron: this.editForm.cron_expression,
-            //   id: this.editForm.id,
-            // };
-            // this.tableData[this.editForm.index] = obj;
+
           }
         })
         .catch((response) => {
@@ -221,24 +183,27 @@ export default {
       }
       return "";
     },
-
-    addCronTask () {
+    addGrpcCronTask () {
       this.$router.push({
         //核心语句
-        path: "/addTask", //跳转的路径
+        path: "/addGrpcTask", //跳转的路径
         query: {
           //路由传参时push和query搭配使用 ，作用时传递参数
           fileCode: "fileCode",
         },
       });
-      Request.post("/api/addTask")
-        .then((response) => {
-          console.log(response);
-          self.time = response.data;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
+    },
+
+    addCronTask () {
+      this.$router.push({
+        //核心语句
+        path: "/addHttpTask", //跳转的路径
+        query: {
+          //路由传参时push和query搭配使用 ，作用时传递参数
+          fileCode: "fileCode",
+        },
+      });
+
     },
 
     handleClose (done) {

@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header"
            class="clearfix">
-        <span>addTask</span>
+        <h1>Add Http Task</h1>
       </div>
       <template>
         <el-form :rules="rules"
@@ -26,15 +26,11 @@
                            @click="checkCron">CheckExpression</el-button>
               </el-col>
             </el-form-item>
-            <!-- <el-form-item label="method" prop="httpMethod">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-            </el-form-item>-->
             <el-form-item label="url"
                           prop="url">
-              <el-input v-model="formLabelAlign.url"></el-input>
+              <el-input v-model="formLabelAlign.url">
+                <template slot="prepend">Http://</template>
+              </el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary"
@@ -195,8 +191,7 @@ export default {
     },
     handleExceed (files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-        files.length + fileList.length
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
         } 个文件`
       );
     },

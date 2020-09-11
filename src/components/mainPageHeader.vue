@@ -59,7 +59,15 @@ export default {
     console.log(this.activeIndex);
     console.log(this.$route.path);
     this.activeIndex = this.$route.path.substring(1, this.$route.path.length);
-    setInterval(this.pingDb, 1000);
+
+    console.log(process.env.NODE_ENV)
+    if (process.env.NODE_ENV === "development") {
+      console.log("开发环境")
+    } else {
+      console.log("生产环境")
+      setInterval(this.pingDb, 1000);
+
+    }
   },
 };
 </script>
