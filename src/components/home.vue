@@ -6,25 +6,14 @@
       </el-header>
 
       <el-container>
-        <NavMenu style="height:100%" class="sideBar"></NavMenu>
+        <NavMenu style="height:100%"
+                 class="sideBar"></NavMenu>
         <el-main>
           <router-view v-if="isRouterAlive"></router-view>
           <!--路由出口 -->
         </el-main>
       </el-container>
-      <!-- <el-aside>
-        <NavMenu style="height:100%"></NavMenu>
-      </el-aside>
-      <!-- <NavMenu></NavMenu>-->
-      <!-- <el-container>
-        <el-header>
-          <MainPageHeader></MainPageHeader>
-      </el-header>-->
-      <!-- <el-main>
-        <router-view></router-view>
-      <!--路由出口-->
 
-      <!-- </el-container> -->
     </el-container>
   </div>
 </template>
@@ -39,18 +28,18 @@ export default {
     NavMenu,
     MainPageHeader,
   },
-  provide() {
+  provide () {
     return {
       reload: this.reload,
     };
   },
-  data() {
+  data () {
     return {
       isRouterAlive: true,
     };
   },
   methods: {
-    reload() {
+    reload () {
       this.isRouterAlive = false;
       this.$nextTick(function () {
         this.isRouterAlive = true;
@@ -82,6 +71,7 @@ body .el-table colgroup.gutter {
 .el-header {
   padding: 0px !important;
   background-color: #242f42;
+  min-height: 100px;
 }
 .sideBar {
   min-width: 250px;
