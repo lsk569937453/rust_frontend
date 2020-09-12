@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/addGrpcTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addGrpcTask.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/addHttpTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addHttpTask.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mainPageHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mainPageHeader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navMenu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/taskPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/taskPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/axiosUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/axiosUtils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +90,7 @@
       <workItem from="1574458674116" duration="15209000" />
       <workItem from="1599483407191" duration="244000" />
       <workItem from="1599487611293" duration="609000" />
-      <workItem from="1599898547104" duration="486000" />
+      <workItem from="1599898547104" duration="520000" />
     </task>
     <servers />
   </component>
