@@ -17,12 +17,14 @@
               <el-button type="primary" @click="checkCron">CheckExpression</el-button>
             </el-col>
           </el-form-item>
+
+
           <el-form-item label="ipAndPort" prop="url">
             <el-col :span="18">
               <el-input
-                v-model="formLabelAlign.url"
-                placeholder="192.168.1.1:9000"
-                @input="handleInput"
+                  v-model="formLabelAlign.url"
+                  placeholder="192.168.1.1:9000"
+                  @input="handleInput"
               ></el-input>
             </el-col>
             <el-col :span="2" :offset="1">
@@ -84,36 +86,36 @@ export default {
       ],
       rules: {
         taskName: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
+          {required: true, message: "请输入活动名称", trigger: "blur"},
         ],
         cronExpressionInput: [
-          { required: true, message: "请输入cron表达式", trigger: "blur" },
+          {required: true, message: "请输入cron表达式", trigger: "blur"},
         ],
-        url: [{ required: true, message: "请输入url", trigger: "blur" }],
+        url: [{required: true, message: "请输入url", trigger: "blur"}],
       },
     };
   },
 
   mounted() {
-    // document
-    //   .querySelector("body")
-    //   .setAttribute("style", "background-color:#C0C4CC");
+
     var self = this;
-    // setInterval(getTotelNumber, 5000);
+
     function getTotelNumber() {
       Request.get("/api/world")
-        .then((response) => {
-          console.log(response);
-          self.time = response.data;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
+          .then((response) => {
+            console.log(response);
+            self.time = response.data;
+          })
+          .catch((response) => {
+            console.log(response);
+          });
     }
   },
   methods: {
-    validateGrpc() {},
-    tabClick() {},
+    validateGrpc() {
+    },
+    tabClick() {
+    },
     beforeDestroy() {
       document.querySelector("body").removeAttribute("style");
     },
@@ -139,7 +141,7 @@ export default {
 
       this.$notify({
         title: "error message",
-        message: h("i", { style: "color: red" }, msg),
+        message: h("i", {style: "color: red"}, msg),
       });
     },
     handleRemove(file, fileList) {
@@ -164,19 +166,19 @@ export default {
         cron_expression: this.formLabelAlign.cronExpressionInput,
         url: this.formLabelAlign.url,
       })
-        .then((response) => {
-          let data = response.data;
-          if (data.res_code == -1) {
-            this.open1(data.message);
-          } else if (data.res_code == 0) {
-            this.checklog = data.message;
-          }
-          console.log(response);
-          self.time = response.data;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
+          .then((response) => {
+            let data = response.data;
+            if (data.res_code == -1) {
+              this.open1(data.message);
+            } else if (data.res_code == 0) {
+              this.checklog = data.message;
+            }
+            console.log(response);
+            self.time = response.data;
+          })
+          .catch((response) => {
+            console.log(response);
+          });
     },
     addCronTask() {
       Request.post("/api/task/add", {
@@ -184,35 +186,36 @@ export default {
         cron_expression: this.formLabelAlign.cronExpressionInput,
         url: this.formLabelAlign.url,
       })
-        .then((response) => {
-          let data = response.data;
-          if (data.resCode == -1) {
-            this.open1(data.message);
-          } else if (data.resCode == 0) {
-            this.openFullScreen1();
+          .then((response) => {
+            let data = response.data;
+            if (data.resCode == -1) {
+              this.open1(data.message);
+            } else if (data.resCode == 0) {
+              this.openFullScreen1();
 
-            //  this.checklog = data.message;
-          }
-          console.log(response);
-          self.time = response.data;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
+              //  this.checklog = data.message;
+            }
+            console.log(response);
+            self.time = response.data;
+          })
+          .catch((response) => {
+            console.log(response);
+          });
     },
 
     handleClose(done) {
       this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
+          .then((_) => {
+            done();
+          })
+          .catch((_) => {
+          });
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
-        } 个文件`
+          `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+              files.length + fileList.length
+          } 个文件`
       );
     },
     beforeRemove(file, fileList) {
@@ -226,6 +229,7 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
+
 .formInput {
   width: 30px;
 }

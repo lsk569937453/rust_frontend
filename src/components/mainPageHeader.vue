@@ -17,7 +17,7 @@
         <span style="color: rgb(0, 0, 0);">【NOTICE】</span>
         <span class="noticeText">
           <!-- All the thing goes well. -->
-          {{notice}}
+          {{ notice }}
         </span>
       </marquee>
     </div>
@@ -30,19 +30,19 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "mainPageHeader",
-  data () {
+  data() {
     return {
       activeIndex: "timePage",
       notice: " All the thing goes well."
     };
   },
   methods: {
-    handleSelect (key, keyPath) {
+    handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-    pingDb () {
+    pingDb() {
 
-      Request.get("/api/db/dbPing", { timeout: 500 }).then(response => {
+      Request.get("/api/db/dbPing", {timeout: 500}).then(response => {
 
         if (response.data.resCode == 0) {
 
@@ -55,7 +55,7 @@ export default {
       });
     }
   },
-  mounted () {
+  mounted() {
     console.log(this.activeIndex);
     console.log(this.$route.path);
     this.activeIndex = this.$route.path.substring(1, this.$route.path.length);
@@ -77,10 +77,12 @@ export default {
   color: darkred;
   line-height: 3;
 }
+
 .fatherDiv {
   position: relative;
   height: 100%;
 }
+
 /* .el-row {
   margin-bottom: 20px;
 } */
@@ -88,6 +90,7 @@ export default {
   cursor: pointer;
   color: #409eff;
 }
+
 .header-right {
   /* float: right;
   padding-right: 50px;
@@ -97,6 +100,7 @@ export default {
   right: 20px;
   height: 60%;
 }
+
 .readtitle {
   background: rgb(227, 176, 139);
   height: 40%;

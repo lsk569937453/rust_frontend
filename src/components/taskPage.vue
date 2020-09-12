@@ -5,10 +5,12 @@
            class="clearfix">
         <el-button style="float: left; padding: 3px 0"
                    type="text"
-                   @click="addCronTask">Add HTTP Schedule Task</el-button>
+                   @click="addCronTask">Add HTTP Schedule Task
+        </el-button>
         <el-button style="float: left; padding: 3px 0"
                    type="text"
-                   @click="addGrpcCronTask">Add Grpc Schedule Task</el-button>
+                   @click="addGrpcCronTask">Add Grpc Schedule Task
+        </el-button>
         <span>Task List</span>
       </div>
       <template>
@@ -31,18 +33,21 @@
               <el-button @click="editTaskShowDialog(scope.row,scope.$index)"
                          type="text"
                          icon="el-icon-edit"
-                         size="medium">edit</el-button>
+                         size="medium">edit
+              </el-button>
 
               <el-button @click="clickToHistory(scope.row)"
                          type="text"
                          icon="el-icon-tickets"
-                         size="medium">task history</el-button>
+                         size="medium">task history
+              </el-button>
 
               <el-button @click="handleDelete(scope.row)"
                          type="text"
                          icon="el-icon-delete"
                          size="medium"
-                         class="red">delete</el-button>
+                         class="red">delete
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -67,7 +72,8 @@
            class="dialog-footer">
         <el-button @click="editDiagVisible = false">cancel</el-button>
         <el-button type="primary"
-                   @click="confirmEdit">Ok</el-button>
+                   @click="confirmEdit">Ok
+        </el-button>
       </div>
     </el-dialog>
   </el-main>
@@ -79,7 +85,7 @@ import Request from "../utils/axiosUtils";
 export default {
   name: "taskPage",
   inject: ["reload"],
-  data () {
+  data() {
     return {
       time: "111",
       cronExpressionInput: "",
@@ -95,13 +101,13 @@ export default {
       editDiagVisible: false,
     };
   },
-  mounted () {
+  mounted() {
     // document
     //   .querySelector("body")
     //   .setAttribute("style", "background-color:#f0f0f0");
     var self = this;
     // setInterval(getTotelNumber, 5000);
-    let postJson = { user_id: "-1" };
+    let postJson = {user_id: "-1"};
     Request.post("/api/task/getByUserId", postJson).then((response) => {
       let data = response.data;
       if (data.resCode == 0) {
@@ -125,57 +131,58 @@ export default {
 
   },
   methods: {
-    confirmEdit () {
+    confirmEdit() {
       this.editDiagVisible = false;
 
       // var _location = window.location;
       Request.post("/api/task/updateById", this.editForm)
-        .then((response) => {
-          console.log(response);
-          if (response.data.resCode === 0) {
-            this.reload();
+          .then((response) => {
+            console.log(response);
+            if (response.data.resCode === 0) {
+              this.reload();
 
-          }
-        })
-        .catch((response) => {
-          console.log(response);
-        });
+            }
+          })
+          .catch((response) => {
+            console.log(response);
+          });
     },
 
-    handleDelete (row) {
+    handleDelete(row) {
       // 二次确认删除
       this.$confirm('Are you sure you want to delete it？', 'Tips', {
         confirmButtonText: 'Ok',
         cancelButtonText: 'cancel',
         type: 'warning'
       })
-        .then(() => {
-          let obj = { "id": row.id }
-          Request.post("/api/task/delById", obj)
-            .then((response) => {
-              console.log(response);
-              this.$message.success('delete success');
-              this.reload();
-            })
-            .catch((response) => {
-              console.log(response);
-            });
+          .then(() => {
+            let obj = {"id": row.id}
+            Request.post("/api/task/delById", obj)
+                .then((response) => {
+                  console.log(response);
+                  this.$message.success('delete success');
+                  this.reload();
+                })
+                .catch((response) => {
+                  console.log(response);
+                });
 
-        })
-        .catch(() => { });
+          })
+          .catch(() => {
+          });
     },
-    editTaskShowDialog (row, index) {
+    editTaskShowDialog(row, index) {
       this.editForm.url = row.taskUrl;
       this.editForm.cron_expression = row.taskCron;
       this.editForm.id = row.id;
       this.editForm.index = index;
       this.editDiagVisible = true;
     },
-    clickToHistory (row) {
+    clickToHistory(row) {
       console.log("aaa", row);
-      this.$router.push({ name: "taskhistory", query: { taskId: row.id } });
+      this.$router.push({name: "taskhistory", query: {taskId: row.id}});
     },
-    tableRowClassName ({ row, rowIndex }) {
+    tableRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 0) {
         return "warning-row";
       } else if (rowIndex % 2 === 1) {
@@ -183,7 +190,7 @@ export default {
       }
       return "";
     },
-    addGrpcCronTask () {
+    addGrpcCronTask() {
       this.$router.push({
         //核心语句
         path: "/addGrpcTask", //跳转的路径
@@ -194,7 +201,7 @@ export default {
       });
     },
 
-    addCronTask () {
+    addCronTask() {
       this.$router.push({
         //核心语句
         path: "/addHttpTask", //跳转的路径
@@ -206,19 +213,20 @@ export default {
 
     },
 
-    handleClose (done) {
+    handleClose(done) {
       this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => { });
+          .then((_) => {
+            done();
+          })
+          .catch((_) => {
+          });
     },
 
   }
 };
 </script>
 
-<style >
+<style>
 .el-row {
   margin-bottom: 20px;
 }
@@ -230,6 +238,7 @@ export default {
 .el-table .success-row {
   background: #f0f9eb;
 }
+
 .red {
   color: #ff0000;
 }
