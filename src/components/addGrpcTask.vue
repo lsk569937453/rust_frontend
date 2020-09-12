@@ -1,43 +1,38 @@
 <template>
   <el-main>
     <el-card class="box-card">
-      <div slot="header"
-           class="clearfix">
+      <div slot="header" class="clearfix">
         <h1>Add Grpc Task</h1>
       </div>
       <template>
-        <el-form :rules="rules"
-                 label-width="100px"
-                 :model="formLabelAlign"
-                 label-position="right">
-          <el-row>
-            <el-form-item label="task name"
-                          prop="taskName">
-              <el-input v-model="formLabelAlign.taskName"></el-input>
-            </el-form-item>
-            <el-form-item label="cron expression"
-                          prop="cronExpressionInput">
-              <el-col :span="22">
-                <el-input v-model="formLabelAlign.cronExpressionInput"
-                          :xs="8"></el-input>
-              </el-col>
-              <el-col :span="2">
-                <el-button type="primary"
-                           @click="checkCron">CheckExpression</el-button>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="ipAndPort"
-                          prop="url">
-              <el-input v-model="formLabelAlign.url"
-                        placeholder="192.168.1.1:9000"
-                        @input="handleInput"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary"
-                         @click="addCronTask">create</el-button>
-              <el-button>cancal</el-button>
-            </el-form-item>
-          </el-row>
+        <el-form :rules="rules" label-width="100px" :model="formLabelAlign" label-position="right">
+          <el-form-item label="task name" prop="taskName">
+            <el-input v-model="formLabelAlign.taskName"></el-input>
+          </el-form-item>
+          <el-form-item label="cron expression" prop="cronExpressionInput">
+            <el-col :span="18">
+              <el-input v-model="formLabelAlign.cronExpressionInput" :xs="8"></el-input>
+            </el-col>
+            <el-col :span="2" :offset="1">
+              <el-button type="primary" @click="checkCron">CheckExpression</el-button>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="ipAndPort" prop="url">
+            <el-col :span="18">
+              <el-input
+                v-model="formLabelAlign.url"
+                placeholder="192.168.1.1:9000"
+                @input="handleInput"
+              ></el-input>
+            </el-col>
+            <el-col :span="2" :offset="1">
+              <el-button type="primary" @click="validateGrpc">validate</el-button>
+            </el-col>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="addCronTask">create</el-button>
+            <el-button>cancal</el-button>
+          </el-form-item>
         </el-form>
       </template>
     </el-card>
@@ -45,23 +40,14 @@
     <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
 
     <el-card class="box-card">
-      <div slot="header"
-           class="clearfix">
-        <span>Grpc Call
-        </span>
+      <div slot="header" class="clearfix">
+        <span>Grpc Call</span>
       </div>
       <template>
-        <el-tabs v-model="activeName"
-                 type="card"
-                 @tab-click="tabClick">
-          <el-tab-pane label="用户管理"
-                       name="first">Request Form</el-tab-pane>
-          <el-tab-pane label="配置管理"
-                       name="second">Raw Request(JSON)</el-tab-pane>
-          <el-tab-pane label="角色管理"
-                       name="third">Response</el-tab-pane>
-          <el-tab-pane label="定时任务补偿"
-                       name="fourth">定时任务补偿</el-tab-pane>
+        <el-tabs v-model="activeName" type="card" @tab-click="tabClick">
+          <el-tab-pane label="requestForm" name="first">Request Form</el-tab-pane>
+          <el-tab-pane label="requestJson" name="second">Raw Request(JSON)</el-tab-pane>
+          <el-tab-pane label="response" name="third">Response</el-tab-pane>
         </el-tabs>
       </template>
     </el-card>
@@ -73,7 +59,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "addTaskPage",
-  data () {
+  data() {
     return {
       activeName: "first",
       time: "111",
@@ -92,9 +78,9 @@ export default {
             {
               methodName: "",
               inputType: "",
-            }
+            },
           ],
-        }
+        },
       ],
       rules: {
         taskName: [
@@ -108,13 +94,13 @@ export default {
     };
   },
 
-  mounted () {
+  mounted() {
     // document
     //   .querySelector("body")
     //   .setAttribute("style", "background-color:#C0C4CC");
     var self = this;
     // setInterval(getTotelNumber, 5000);
-    function getTotelNumber () {
+    function getTotelNumber() {
       Request.get("/api/world")
         .then((response) => {
           console.log(response);
@@ -126,11 +112,12 @@ export default {
     }
   },
   methods: {
-    tabClick () { },
-    beforeDestroy () {
+    validateGrpc() {},
+    tabClick() {},
+    beforeDestroy() {
       document.querySelector("body").removeAttribute("style");
     },
-    openFullScreen1 () {
+    openFullScreen1() {
       this.fullscreenLoading = true;
       const loading = this.$loading({
         lock: true,
@@ -147,7 +134,7 @@ export default {
       }, 2000);
     },
 
-    open1 (msg) {
+    open1(msg) {
       const h = this.$createElement;
 
       this.$notify({
@@ -155,23 +142,23 @@ export default {
         message: h("i", { style: "color: red" }, msg),
       });
     },
-    handleRemove (file, fileList) {
+    handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    handlePreview (file) {
+    handlePreview(file) {
       console.log(file);
     },
-    gotoBlur (input) {
-      console.log(input)
+    gotoBlur(input) {
+      console.log(input);
     },
-    handleInput () {
-      clearTimeout(this.TimeId)
+    handleInput() {
+      clearTimeout(this.TimeId);
       this.TimeId = setTimeout(() => {
-        this.gotoBlur(this.formLabelAlign.url) // 定时器生效时执行的方法
-      }, 300)
-      console.log('分数：', this.formLabelAlign.url)
+        this.gotoBlur(this.formLabelAlign.url); // 定时器生效时执行的方法
+      }, 300);
+      console.log("分数：", this.formLabelAlign.url);
     },
-    checkCron () {
+    checkCron() {
       Request.post("/api/check/task", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
@@ -191,7 +178,7 @@ export default {
           console.log(response);
         });
     },
-    addCronTask () {
+    addCronTask() {
       Request.post("/api/task/add", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
@@ -214,23 +201,23 @@ export default {
         });
     },
 
-    handleClose (done) {
+    handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
           done();
         })
-        .catch((_) => { });
+        .catch((_) => {});
     },
-    handleExceed (files, fileList) {
+    handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
         } 个文件`
       );
     },
-    beforeRemove (file, fileList) {
+    beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }, //文件上传成功时的钩子
-
   },
 };
 </script>

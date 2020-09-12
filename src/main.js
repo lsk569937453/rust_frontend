@@ -12,6 +12,13 @@ import VueRouter from 'vue-router'
 import routerConfig from './router.config.js'
 
 Vue.use(VueRouter);
+
+//add the code ,the menu could be  clicked
+const VueRouterPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(to) {
+    return VueRouterPush.call(this, to).catch(err => err)
+}
+
 Vue.prototype.$ajax = axios;
 Vue.use(ElementUI, { locale })
 Vue.use(JsonViewer)
