@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/axiosUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/axiosUtils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/addGrpcTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addGrpcTask.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +47,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cron_timer_h5" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -58,7 +62,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -90,7 +94,8 @@
       <workItem from="1574458674116" duration="15209000" />
       <workItem from="1599483407191" duration="244000" />
       <workItem from="1599487611293" duration="609000" />
-      <workItem from="1599898547104" duration="520000" />
+      <workItem from="1599898547104" duration="11793000" />
+      <workItem from="1599962839135" duration="11657000" />
     </task>
     <servers />
   </component>
@@ -100,11 +105,41 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
           </value>
         </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="1" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
@@ -114,9 +149,21 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="125" y="200" key="EditFileWatcherDialog/0.0.1600.860@0.0.1600.860" timestamp="1599898699698" />
-    <state x="0" y="56" key="SettingsEditor" timestamp="1599899020699">
+    <state x="580" y="184" key="FileChooserDialogImpl" timestamp="1599912179669">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="0" y="56" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1599899020699" />
+    <state x="580" y="184" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1599912179669" />
+    <state x="0" y="56" key="SettingsEditor" timestamp="1599901049048">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="0" y="56" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1599901049048" />
+    <state x="502" y="28" width="596" height="804" key="find.popup" timestamp="1599912083790">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="502" y="28" width="596" height="804" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1599912083790" />
+    <state x="456" y="190" key="run.anything.popup" timestamp="1599904149001">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="456" y="190" key="run.anything.popup/0.0.1600.860@0.0.1600.860" timestamp="1599904149001" />
   </component>
 </project>
