@@ -244,6 +244,7 @@ export default {
       var reqJson = {url: this.formLabelAlign.url}
       Request.post("/api/grpc/getServiceList", reqJson).then(response => {
         if (response.data.resCode == 0) {
+          this.grpcForm.services = [];
           var serviceList = response.data.message.services;
           for (var service of serviceList) {
 
