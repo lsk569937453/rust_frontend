@@ -6,12 +6,14 @@
           <h1>Add Grpc Task</h1>
         </div>
         <template>
-          <el-form :rules="rules" label-width="100px" :model="formLabelAlign" label-position="right">
+          <el-form :rules="rules" label-width="200px" :model="formLabelAlign" label-position="right">
             <el-form-item label="task name" prop="taskName">
-              <el-input v-model="formLabelAlign.taskName"></el-input>
+              <el-col :span="12">
+                <el-input v-model="formLabelAlign.taskName"></el-input>
+              </el-col>
             </el-form-item>
             <el-form-item label="cron expression" prop="cronExpressionInput">
-              <el-col :span="18">
+              <el-col :span="12">
                 <el-input v-model="formLabelAlign.cronExpressionInput" :xs="8"></el-input>
               </el-col>
               <el-col :span="2" :offset="1">
@@ -21,7 +23,7 @@
 
 
             <el-form-item label="ipAndPort" prop="url">
-              <el-col :span="18">
+              <el-col :span="12">
                 <el-input
                     v-model="formLabelAlign.url"
                     placeholder="192.168.1.1:9000"
@@ -31,13 +33,14 @@
                 <el-button type="primary" @click="validateGrpc">validate</el-button>
               </el-col>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="text-align: left">
               <el-button type="primary" @click="addCronTask">create task</el-button>
               <el-button>cancal</el-button>
             </el-form-item>
           </el-form>
         </template>
       </el-card>
+
     </div>
 
     <div v-if="this.showPannel==0">
@@ -46,7 +49,7 @@
         <h1 style="text-align: center">Grpc Call</h1>
         <div class="grpcHeaderCls">
           <span class="textCls">Service name:</span>
-          <el-select v-model="grpcForm.currentService" placeholder="请选择" @change="serviceChange">
+          <el-select v-model="grpcForm.currentService" placeholder="please select" @change="serviceChange">
             <el-option
                 v-for="item in grpcForm.services"
                 :key="item.serviceName"
@@ -58,7 +61,7 @@
         </div>
         <div class="grpcHeaderCls">
           <span class="textCls">Method name:</span>
-          <el-select v-model="grpcForm.currentMethod" placeholder="请选择" @change="methodChange">
+          <el-select v-model="grpcForm.currentMethod" placeholder="please select" @change="methodChange">
             <el-option
                 v-for="item in methodSelect"
                 :key="item.methodName"

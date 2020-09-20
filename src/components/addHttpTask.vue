@@ -1,74 +1,91 @@
 <template>
   <el-main>
-    <el-card class="box-card">
+    <el-card class="firstCard">
       <div slot="header"
            class="clearfix">
         <h1>Add Http Task</h1>
       </div>
       <template>
         <el-form :rules="rules"
-                 label-width="100px"
+                 label-width="200px"
                  :model="formLabelAlign"
-                 label-position="right">
-          <el-row>
+                 label-position="right"
+        >
 
-            <el-form-item label="task name"
-                          prop="taskName">
+          <el-form-item label="task name"
+                        prop="taskName">
+            <el-col :span="12">
               <el-input v-model="formLabelAlign.taskName"></el-input>
-            </el-form-item>
-            <el-form-item label="cron expression"
-                          prop="cronExpressionInput">
-              <el-col :span="22">
-                <el-input v-model="formLabelAlign.cronExpressionInput"
-                          :xs="8"></el-input>
-              </el-col>
-              <el-col :span="2">
-                <el-button type="primary"
-                           @click="checkCron">CheckExpression
-                </el-button>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="url"
-                          prop="url">
+            </el-col>
+          </el-form-item>
+          <el-form-item label="cron expression"
+                        prop="cronExpressionInput">
+            <el-col :span="12">
+              <el-input v-model="formLabelAlign.cronExpressionInput"
+                        :xs="8"></el-input>
+            </el-col>
+
+          </el-form-item>
+          <el-form-item label="url"
+                        prop="url">
+            <el-col :span="12">
               <el-input v-model="formLabelAlign.url">
                 <template slot="prepend">Http://</template>
               </el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary"
-                         @click="addCronTask">create
-              </el-button>
-              <el-button>cancal</el-button>
-            </el-form-item>
-          </el-row>
+            </el-col>
+          </el-form-item>
+          <el-form-item style="text-align: left">
+            <el-button type="primary"
+                       @click="addCronTask">create
+            </el-button>
+            <el-button>cancal</el-button>
+          </el-form-item>
         </el-form>
       </template>
+    </el-card>
+    <el-card>
+      <div slot="header"
+           class="clearfix">
+        <h1>Cron Demo</h1>
+      </div>
+
+      <div>
+        <el-table
+            :data="tableData"
+            stripe
+            style="width: 100%">
+          <el-table-column
+              prop="cron"
+              label="cronExpression"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="desc"
+              label="Explain"
+          >
+          </el-table-column>
+
+        </el-table>
+        <!--                  v-model="form.desc"-->
+
+      </div>
     </el-card>
 
     <!-- <el-button plain @click="open1">可自动关闭</el-button> -->
 
-    <el-card class="box-card">
-      <div slot="header"
-           class="clearfix">
-        <span>Scheduled task execution list
-        </span>
-      </div>
-      <template>
-        <div v-for="(item,i) in checklog"
-             :key="i">{{ item }}
-        </div>
-      </template>
-    </el-card>
+
   </el-main>
 </template>
 
 <script>
 import Request from "../utils/axiosUtils";
+import expressionUtils from "../utils/cronSample.js"
 
 export default {
   name: "addTaskPage",
   data() {
     return {
+      tableData: [],
       time: "111",
       dialogVisible: false,
       checklog: [],
@@ -95,19 +112,7 @@ export default {
     // document
     //   .querySelector("body")
     //   .setAttribute("style", "background-color:#C0C4CC");
-    var self = this;
-
-    // setInterval(getTotelNumber, 5000);
-    function getTotelNumber() {
-      Request.get("/api/world")
-          .then((response) => {
-            console.log(response);
-            self.time = response.data;
-          })
-          .catch((response) => {
-            console.log(response);
-          });
-    }
+    this.tableData = expressionUtils.getAllExpression()
   },
   methods: {
     beforeDestroy() {
@@ -178,6 +183,16 @@ export default {
               this.openFullScreen1();
 
               //  this.checklog = data.message;
+            } else if (data.resCode == -2) {
+              let messageArray = response.data.message;
+              var message = messageArray.map(function (item) {
+                return item.message;
+              })
+              console.log(message)
+              this.$notify({
+                title: 'NOTIFY',
+                message: message
+              });
             }
             console.log(response);
             self.time = response.data;
@@ -252,7 +267,16 @@ export default {
   margin-bottom: 20px;
 }
 
+/*.formCls /deep/ .el-input {*/
+/*  width: auto !important;*/
+/*}*/
+
 .formInput {
   width: 30px;
 }
+
+.firstCard {
+  margin: 30px 100px 30px 100px;
+}
+
 </style>
