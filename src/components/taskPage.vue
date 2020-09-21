@@ -19,15 +19,33 @@
                   :row-class-name="tableRowClassName">
           <el-table-column prop="timestamp"
                            label="Date"
-                           width="180"></el-table-column>
+                           align="center"
+                           min-width="2"></el-table-column>
           <el-table-column prop="taskCron"
-                           label="Cron  Expression"
-                           width="180"></el-table-column>
+                           label="Cron"
+                           align="center"
+                           min-width="1"></el-table-column>
           <el-table-column prop="taskUrl"
+                           min-width="2.5"
+                           align="center"
                            label="Url"></el-table-column>
+
+          <el-table-column
+              min-width="1"
+              align="center"
+              label="Status">
+            <template slot-scope="scope">
+              <i class="el-icon-error" v-if="scope.row.task_status==1" style="color: red">unreachable</i>
+              <i class="el-icon-success" v-else-if="scope.row.task_status==0" style="color: green">normal</i>
+            </template>
+          </el-table-column>
+          <el-table-column prop="req_type"
+                           min-width="1"
+                           align="center"
+                           label="ReqType"></el-table-column>
           <el-table-column fixed="right"
-                           label="操作"
-                           width="250"
+                           label="action"
+                           min-width="3"
                            align="center">
             <template slot-scope="scope">
               <el-button @click="editTaskShowDialog(scope.row,scope.$index)"
@@ -117,11 +135,19 @@ export default {
           let url = item["url"];
           let timestamp = item["timestamp"];
           let id = item["id"];
+          let task_status = item["task_status"];
+          let req_type = "";
+          // let req_type = item["req_type"];
+          if (item["req_type"] == 0)
+            req_type = "HTTP"
+          else req_type = "GRPC"
           let obj = {
             taskName: taskName,
             taskCron: taskCron,
             taskUrl: url,
             timestamp: timestamp,
+            task_status: task_status,
+            req_type: req_type,
             id: id,
           };
           this.tableData.push(obj);

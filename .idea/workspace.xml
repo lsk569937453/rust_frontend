@@ -6,10 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/utils/cronSample.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/addGrpcTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addGrpcTask.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/addHttpTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addHttpTask.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/taskPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/taskPage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +97,8 @@
       <workItem from="1599898547104" duration="11793000" />
       <workItem from="1599962839135" duration="12419000" />
       <workItem from="1600513220068" duration="1893000" />
-      <workItem from="1600565100735" duration="9966000" />
+      <workItem from="1600565100735" duration="9987000" />
+      <workItem from="1600696286510" duration="2474000" />
     </task>
     <servers />
   </component>
