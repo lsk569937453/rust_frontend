@@ -2,39 +2,49 @@
   <el-main>
     <div class="firstCard">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header"
+             class="clearfix">
           <h1>Add Grpc Task</h1>
         </div>
         <template>
-          <el-form :rules="rules" label-width="200px" :model="formLabelAlign" label-position="right">
-            <el-form-item label="task name" prop="taskName">
+          <el-form :rules="rules"
+                   label-width="200px"
+                   :model="formLabelAlign"
+                   label-position="right">
+            <el-form-item label="task name"
+                          prop="taskName">
               <el-col :span="12">
                 <el-input v-model="formLabelAlign.taskName"></el-input>
               </el-col>
             </el-form-item>
-            <el-form-item label="cron expression" prop="cronExpressionInput">
+            <el-form-item label="cron expression"
+                          prop="cronExpressionInput">
               <el-col :span="12">
-                <el-input v-model="formLabelAlign.cronExpressionInput" :xs="8"></el-input>
+                <el-input v-model="formLabelAlign.cronExpressionInput"
+                          :xs="8"></el-input>
               </el-col>
-              <el-col :span="2" :offset="1">
-                <el-button type="primary" @click="checkCron">CheckExpression</el-button>
+              <el-col :span="2"
+                      :offset="1">
+                <el-button type="primary"
+                           @click="checkCron">CheckExpression</el-button>
               </el-col>
             </el-form-item>
 
-
-            <el-form-item label="ipAndPort" prop="url">
+            <el-form-item label="ipAndPort"
+                          prop="url">
               <el-col :span="12">
-                <el-input
-                    v-model="formLabelAlign.url"
-                    placeholder="192.168.1.1:9000"
-                ></el-input>
+                <el-input v-model="formLabelAlign.url"
+                          placeholder="192.168.1.1:9000"></el-input>
               </el-col>
-              <el-col :span="2" :offset="1">
-                <el-button type="primary" @click="validateGrpc">validate</el-button>
+              <el-col :span="2"
+                      :offset="1">
+                <el-button type="primary"
+                           @click="validateGrpc">validate</el-button>
               </el-col>
             </el-form-item>
             <el-form-item style="text-align: left">
-              <el-button type="primary" @click="addCronTask">create task</el-button>
+              <el-button type="primary"
+                         @click="addCronTask">create task</el-button>
               <el-button>cancal</el-button>
             </el-form-item>
           </el-form>
@@ -49,38 +59,47 @@
         <h1 style="text-align: center">Grpc Call</h1>
         <div class="grpcHeaderCls">
           <span class="textCls">Service name:</span>
-          <el-select v-model="grpcForm.currentService" placeholder="please select" @change="serviceChange">
-            <el-option
-                v-for="item in grpcForm.services"
-                :key="item.serviceName"
-                :label="item.serviceName"
-                :value="item.serviceName"
-            >
+          <el-select v-model="grpcForm.currentService"
+                     placeholder="please select"
+                     @change="serviceChange">
+            <el-option v-for="item in grpcForm.services"
+                       :key="item.serviceName"
+                       :label="item.serviceName"
+                       :value="item.serviceName">
             </el-option>
           </el-select>
         </div>
         <div class="grpcHeaderCls">
           <span class="textCls">Method name:</span>
-          <el-select v-model="grpcForm.currentMethod" placeholder="please select" @change="methodChange">
-            <el-option
-                v-for="item in methodSelect"
-                :key="item.methodName"
-                :label="item.methodName"
-                :value="item.methodName">
+          <el-select v-model="grpcForm.currentMethod"
+                     placeholder="please select"
+                     @change="methodChange">
+            <el-option v-for="item in methodSelect"
+                       :key="item.methodName"
+                       :label="item.methodName"
+                       :value="item.methodName">
             </el-option>
           </el-select>
         </div>
-        <el-tabs v-model="activeName" type="border-card" @tab-click="tabClick" class="grpcPannleCls">
-          <el-tab-pane label="requestForm" name="first">
+        <el-tabs v-model="activeName"
+                 type="border-card"
+                 @tab-click="tabClick"
+                 class="grpcPannleCls">
+          <el-tab-pane label="requestForm"
+                       name="first">
             <h3>Request Data</h3>
 
             <div class="grpcReqLine">
               <span style="color:#888;line-height: 3"><em>stream</em> {{ grpcMethodObj.inputName }}</span>
-              <el-form :model="grpcMethodObj" label-width="80px">
-                <el-form-item v-for="(field,i) in grpcMethodObj.realField" :key="field.fieldName"
+              <el-form :model="grpcMethodObj"
+                       label-width="80px">
+                <el-form-item v-for="(field,i) in grpcMethodObj.realField"
+                              :key="field.fieldName"
                               :label="field.fieldName"
                               class="reqDataFormItemCls">
-                  <el-input type="textarea" :rows="1" v-model=field.fieldValue>
+                  <el-input type="textarea"
+                            :rows="1"
+                            v-model=field.fieldValue>
                   </el-input>
                 </el-form-item>
               </el-form>
@@ -90,15 +109,17 @@
               <h3>Request Timeout
               </h3>
               <div class="grpcTimeOutdiv">
-                <el-input v-model="grpcForm.grpcTimeOut" placeholder="please input timeout"></el-input>
+                <el-input v-model="grpcForm.grpcTimeOut"
+                          placeholder="please input timeout"></el-input>
                 <span>seconds</span>
               </div>
             </div>
-            <el-button plain @click="invokeClick">Invoke</el-button>
+            <el-button plain
+                       @click="invokeClick">Invoke</el-button>
 
           </el-tab-pane>
-          <el-tab-pane label="requestJson" name="second">
-
+          <el-tab-pane label="requestJson"
+                       name="second">
 
             <div style="margin-bottom: 20px">
               <h3>Request Timeout
@@ -106,13 +127,13 @@
 
             </div>
           </el-tab-pane>
-          <el-tab-pane label="response" name="third">
+          <el-tab-pane label="response"
+                       name="third">
             <div style="margin-bottom: 20px">
               <h3>Response Data
               </h3>
               <div class="grpcReqLine">
-                <span style="color:#888;line-height: 3"><em>message</em>  {{ grpcResponseMessage }}</span>
-
+                <span style="color:#888;line-height: 3"><em>message</em> {{ grpcResponseMessage }}</span>
 
               </div>
             </div>
@@ -128,7 +149,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "addTaskPage",
-  data() {
+  data () {
     return {
       showPannel: -1,//show tha pannel which contains the grpc test pannel and the cron pannel
       methodSelect: [],
@@ -180,29 +201,29 @@ export default {
       ],
       rules: {
         taskName: [
-          {required: true, message: "请输入活动名称", trigger: "blur"},
+          { required: true, message: "请输入活动名称", trigger: "blur" },
         ],
         cronExpressionInput: [
-          {required: true, message: "请输入cron表达式", trigger: "blur"},
+          { required: true, message: "请输入cron表达式", trigger: "blur" },
         ],
-        url: [{required: true, message: "请输入url", trigger: "blur"}],
+        url: [{ required: true, message: "请输入url", trigger: "blur" }],
       },
     };
   },
 
-  mounted() {
+  mounted () {
 
 
   },
   methods: {
-    formatFieldJson() {
+    formatFieldJson () {
       var req = {}
       for (var item of this.grpcMethodObj.realField) {
         req[item.fieldName] = item.fieldValue;
       }
       return JSON.stringify(req)
     },
-    invokeClick() {
+    invokeClick () {
       console.log(this.grpcMethodObj)
 
       var reqjson = {
@@ -219,7 +240,7 @@ export default {
         console.log(response)
       })
     },
-    methodChange() {
+    methodChange () {
 
       for (var service of this.grpcForm.services) {
         if (service.serviceName == this.grpcForm.currentService) {
@@ -231,20 +252,20 @@ export default {
         }
       }
     },
-    serviceChange() {
+    serviceChange () {
       console.log(this.grpcForm.currentService)
       var currentService = this.grpcForm.services.filter(item => {
-            return item.serviceName === this.grpcForm.currentService
-          }
+        return item.serviceName === this.grpcForm.currentService
+      }
       )
       this.methodSelect = currentService[0].methods;
       this.grpcForm.currentMethod = this.methodSelect[0].methodName
       this.grpcMethodObj = this.methodSelect[0]
 
     },
-    validateGrpc() {
+    validateGrpc () {
       this.showPannel = 0;
-      var reqJson = {url: this.formLabelAlign.url}
+      var reqJson = { url: this.formLabelAlign.url }
       Request.post("/api/grpc/getServiceList", reqJson).then(response => {
         if (response.data.resCode == 0) {
           this.grpcForm.services = [];
@@ -280,12 +301,12 @@ export default {
     },
 
 
-    tabClick() {
+    tabClick () {
     },
-    beforeDestroy() {
+    beforeDestroy () {
       document.querySelector("body").removeAttribute("style");
     },
-    openFullScreen1() {
+    openFullScreen1 () {
       this.fullscreenLoading = true;
       const loading = this.$loading({
         lock: true,
@@ -302,79 +323,78 @@ export default {
       }, 2000);
     },
 
-    open1(msg) {
+    open1 (msg) {
       const h = this.$createElement;
 
       this.$notify({
         title: "error message",
-        message: h("i", {style: "color: red"}, msg),
+        message: h("i", { style: "color: red" }, msg),
       });
     },
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
       console.log(file, fileList);
     },
-    handlePreview(file) {
+    handlePreview (file) {
       console.log(file);
     },
-    checkCron() {
+    checkCron () {
       Request.post("/api/check/task", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
         url: this.formLabelAlign.url,
       })
-          .then((response) => {
-            let data = response.data;
-            if (data.res_code == -1) {
-              this.open1(data.message);
-            } else if (data.res_code == 0) {
-              this.checklog = data.message;
-            }
-            console.log(response);
-            self.time = response.data;
-          })
-          .catch((response) => {
-            console.log(response);
-          });
+        .then((response) => {
+          let data = response.data;
+          if (data.res_code == -1) {
+            this.open1(data.message);
+          } else if (data.res_code == 0) {
+            this.checklog = data.message;
+          }
+          console.log(response);
+          self.time = response.data;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
     },
-    addCronTask() {
+    addCronTask () {
       Request.post("/api/task/add", {
         name: this.formLabelAlign.taskName,
         cron_expression: this.formLabelAlign.cronExpressionInput,
         url: this.formLabelAlign.url,
       })
-          .then((response) => {
-            let data = response.data;
-            if (data.resCode == -1) {
-              this.open1(data.message);
-            } else if (data.resCode == 0) {
-              this.openFullScreen1();
+        .then((response) => {
+          let data = response.data;
+          if (data.resCode == -1) {
+            this.open1(data.message);
+          } else if (data.resCode == 0) {
+            this.openFullScreen1();
 
-              //  this.checklog = data.message;
-            }
-            console.log(response);
-            self.time = response.data;
-          })
-          .catch((response) => {
-            console.log(response);
-          });
+            //  this.checklog = data.message;
+          }
+          console.log(response);
+          self.time = response.data;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
     },
 
-    handleClose(done) {
+    handleClose (done) {
       this.$confirm("确认关闭？")
-          .then((_) => {
-            done();
-          })
-          .catch((_) => {
-          });
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {
+        });
     },
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       this.$message.warning(
-          `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-              files.length + fileList.length
-          } 个文件`
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
+        } 个文件`
       );
     },
-    beforeRemove(file, fileList) {
+    beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }, //文件上传成功时的钩子
   },

@@ -20,6 +20,7 @@
           <el-table-column prop="timestamp"
                            label="Date"
                            align="center"
+                           sortable
                            min-width="2"></el-table-column>
           <el-table-column prop="taskCron"
                            label="Cron"
@@ -28,20 +29,27 @@
           <el-table-column prop="taskUrl"
                            min-width="2.5"
                            align="center"
+                           sortable
                            label="Url"></el-table-column>
 
-          <el-table-column
-              min-width="1"
-              align="center"
-              label="Status">
+          <el-table-column min-width="1"
+                           align="center"
+                           :sortable="true"
+                           :sort-method="sortByStatus"
+                           label="Status">
             <template slot-scope="scope">
-              <i class="el-icon-error" v-if="scope.row.task_status==1" style="color: red">unreachable</i>
-              <i class="el-icon-success" v-else-if="scope.row.task_status==0" style="color: green">normal</i>
+              <i class="el-icon-error"
+                 v-if="scope.row.task_status==1"
+                 style="color: red">unreachable</i>
+              <i class="el-icon-success"
+                 v-else-if="scope.row.task_status==0"
+                 style="color: green">normal</i>
             </template>
           </el-table-column>
           <el-table-column prop="req_type"
                            min-width="1"
                            align="center"
+                           sortable
                            label="ReqType"></el-table-column>
           <el-table-column fixed="right"
                            label="action"
@@ -103,7 +111,7 @@ import Request from "../utils/axiosUtils";
 export default {
   name: "taskPage",
   inject: ["reload"],
-  data() {
+  data () {
     return {
       time: "111",
       cronExpressionInput: "",
@@ -119,13 +127,13 @@ export default {
       editDiagVisible: false,
     };
   },
-  mounted() {
+  mounted () {
     // document
     //   .querySelector("body")
     //   .setAttribute("style", "background-color:#f0f0f0");
     var self = this;
     // setInterval(getTotelNumber, 5000);
-    let postJson = {user_id: "-1"};
+    let postJson = { user_id: "-1" };
     Request.post("/api/task/getByUserId", postJson).then((response) => {
       let data = response.data;
       if (data.resCode == 0) {
@@ -157,58 +165,64 @@ export default {
 
   },
   methods: {
-    confirmEdit() {
+    sortByStatus (obj1, obj2) {
+      let val1 = obj1.task_status
+      let val2 = obj2.task_status
+      return val2 - val1
+
+    },
+    confirmEdit () {
       this.editDiagVisible = false;
 
       // var _location = window.location;
       Request.post("/api/task/updateById", this.editForm)
-          .then((response) => {
-            console.log(response);
-            if (response.data.resCode === 0) {
-              this.reload();
+        .then((response) => {
+          console.log(response);
+          if (response.data.resCode === 0) {
+            this.reload();
 
-            }
-          })
-          .catch((response) => {
-            console.log(response);
-          });
+          }
+        })
+        .catch((response) => {
+          console.log(response);
+        });
     },
 
-    handleDelete(row) {
+    handleDelete (row) {
       // 二次确认删除
       this.$confirm('Are you sure you want to delete it？', 'Tips', {
         confirmButtonText: 'Ok',
         cancelButtonText: 'cancel',
         type: 'warning'
       })
-          .then(() => {
-            let obj = {"id": row.id}
-            Request.post("/api/task/delById", obj)
-                .then((response) => {
-                  console.log(response);
-                  this.$message.success('delete success');
-                  this.reload();
-                })
-                .catch((response) => {
-                  console.log(response);
-                });
+        .then(() => {
+          let obj = { "id": row.id }
+          Request.post("/api/task/delById", obj)
+            .then((response) => {
+              console.log(response);
+              this.$message.success('delete success');
+              this.reload();
+            })
+            .catch((response) => {
+              console.log(response);
+            });
 
-          })
-          .catch(() => {
-          });
+        })
+        .catch(() => {
+        });
     },
-    editTaskShowDialog(row, index) {
+    editTaskShowDialog (row, index) {
       this.editForm.url = row.taskUrl;
       this.editForm.cron_expression = row.taskCron;
       this.editForm.id = row.id;
       this.editForm.index = index;
       this.editDiagVisible = true;
     },
-    clickToHistory(row) {
+    clickToHistory (row) {
       console.log("aaa", row);
-      this.$router.push({name: "taskhistory", query: {taskId: row.id}});
+      this.$router.push({ name: "taskhistory", query: { taskId: row.id } });
     },
-    tableRowClassName({row, rowIndex}) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex % 2 === 0) {
         return "warning-row";
       } else if (rowIndex % 2 === 1) {
@@ -216,7 +230,7 @@ export default {
       }
       return "";
     },
-    addGrpcCronTask() {
+    addGrpcCronTask () {
       this.$router.push({
         //核心语句
         path: "/addGrpcTask", //跳转的路径
@@ -227,7 +241,7 @@ export default {
       });
     },
 
-    addCronTask() {
+    addCronTask () {
       this.$router.push({
         //核心语句
         path: "/addHttpTask", //跳转的路径
@@ -239,13 +253,13 @@ export default {
 
     },
 
-    handleClose(done) {
+    handleClose (done) {
       this.$confirm("确认关闭？")
-          .then((_) => {
-            done();
-          })
-          .catch((_) => {
-          });
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {
+        });
     },
 
   }
