@@ -7,7 +7,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/taskPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/taskPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TaskHistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TaskHistory.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/addHttpTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addHttpTask.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +48,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cron_timer_h5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../lsk569937453.github.io" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -99,6 +100,8 @@
       <workItem from="1600513220068" duration="1893000" />
       <workItem from="1600565100735" duration="9987000" />
       <workItem from="1600696286510" duration="2474000" />
+      <workItem from="1600865557497" duration="25000" />
+      <workItem from="1600955811304" duration="2653000" />
     </task>
     <servers />
   </component>
@@ -152,10 +155,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="125" y="200" key="EditFileWatcherDialog/0.0.1600.860@0.0.1600.860" timestamp="1599898699698" />
-    <state x="580" y="184" key="FileChooserDialogImpl" timestamp="1599912179669">
+    <state x="580" y="184" key="FileChooserDialogImpl" timestamp="1600865577839">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="580" y="184" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1599912179669" />
+    <state x="580" y="184" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1600865577839" />
     <state x="0" y="56" key="SettingsEditor" timestamp="1599901049048">
       <screen x="0" y="0" width="1600" height="860" />
     </state>

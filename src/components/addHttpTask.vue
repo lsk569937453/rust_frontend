@@ -49,7 +49,7 @@
         <h1>Cron Demo</h1>
       </div>
 
-      <div>
+      <div class="desCls">
         <el-table
             :data="tableData"
             stripe
@@ -66,6 +66,16 @@
           </el-table-column>
 
         </el-table>
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item :title="item.cron+'    '+item.desc" :name="i" v-for="(item,i) in tableData">
+            <div>2020-08-20 05:20:20</div>
+            <div>2020-08-20 05:20:20</div>
+            <div>2020-08-20 05:20:20</div>
+            <div>2020-08-20 05:20:20</div>
+            <div>2020-08-20 05:20:20</div>
+          </el-collapse-item>
+
+        </el-collapse>
         <!--                  v-model="form.desc"-->
 
       </div>
@@ -85,6 +95,7 @@ export default {
   name: "addTaskPage",
   data() {
     return {
+      activeNames: ['1'],
       tableData: [],
       time: "111",
       dialogVisible: false,
@@ -115,6 +126,9 @@ export default {
     this.tableData = expressionUtils.getAllExpression()
   },
   methods: {
+    handleChange(val) {
+      console.log(val);
+    },
     beforeDestroy() {
       document.querySelector("body").removeAttribute("style");
     },
@@ -218,46 +232,8 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    }, //文件上传成功时的钩子
-    // upLoadSuccess(response, file, fileList) {
-    //   if (response.responseCode === 0) {
-    //     Request.post(
-    //       "/api/writeAllTemplateData",
-    //       { name: response.responseBody,cron_expression: },
-    //       { responseType: "blob" }
-    //     )
-    //       .then(response => {
-    //         var blob = new Blob([response.data]);
-    //         var downloadElement = document.createElement("a");
-    //         var href = window.URL.createObjectURL(blob); //创建下载的链接
-    //         downloadElement.href = href;
-    //         downloadElement.download = "用户数据.pdf"; //下载后文件名
-    //         document.body.appendChild(downloadElement);
-    //         downloadElement.click(); //点击下载
-    //         document.body.removeChild(downloadElement); //下载完成移除元素
-    //         window.URL.revokeObjectURL(href); //释放掉blob对象
+    },
 
-    //         console.log(response);
-    //       })
-    //       .then(() => {
-    //         console.log(response + "已上传" + file);
-    //         var fileCode = response.responseBody;
-    //         this.$router.push({
-    //           //核心语句
-    //           path: "/template", //跳转的路径
-    //           query: {
-    //             //路由传参时push和query搭配使用 ，作用时传递参数
-    //             fileCode: fileCode
-    //           }
-    //         });
-    //       })
-    //       .catch(response => {
-    //         console.log(response);
-    //       });
-    //   } else {
-    //     console.log("项目添加失败");
-    //   }
-    // }
   },
 };
 </script>
@@ -279,4 +255,8 @@ export default {
   margin: 30px 100px 30px 100px;
 }
 
+.desCls /deep/ .el-collapse-item__content {
+  text-align: left !important;
+
+}
 </style>

@@ -11,16 +11,23 @@
                   style="width: 100%">
           <el-table-column prop="dateTime"
                            label="Date"
+                           align="center"
+
                            sortable
                            width="180"></el-table-column>
           <el-table-column prop="execTime"
                            label="Execution Time"
+                           align="center"
+
                            sortable
                            width="180"></el-table-column>
           <el-table-column prop="task_url"
+                           align="center"
+
                            label="Url"></el-table-column>
           <!-- <el-table-column prop="execResult" label="执行结果" width="600"></el-table-column> -->
           <el-table-column prop="execCode"
+                           align="center"
                            label="Response Code"></el-table-column>
           <el-table-column fixed="right"
                            label="Response Body"
@@ -29,7 +36,8 @@
               <el-button @click="clickToHistory(scope.row)"
                          type="text"
                          round
-                         size="medium">Detail</el-button>
+                         size="medium">Detail
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -59,7 +67,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "TasskHistory",
-  data () {
+  data() {
     return {
       tableData: [],
       currentPage: 1,
@@ -71,45 +79,45 @@ export default {
     };
   },
 
-  mounted () {
+  mounted() {
     let taskId = Number.parseInt(this.$route.query.taskId);
 
-    let jsonData = { task_id: taskId };
-    let taskjson = { id: taskId };
+    let jsonData = {task_id: taskId};
+    let taskjson = {id: taskId};
     let historyF = Request.post("/api/taskHistory/getByTaskId", jsonData);
     let taskF = Request.post("/api/task/getById", taskjson);
     Request.all([historyF, taskF]).then(
-      Request.spread((res1, res2) => {
-        this.total = res1.data.message.length;
-        console.log("a", res1);
-        console.log("b", res2);
-        if (res1.data.resCode == 0 && res2.data.resCode == 0) {
-          let task_url = res2.data.message[0]["url"];
-          for (var item of res1.data.message) {
-            let execTime = item["exec_time"];
-            let lastIndex = execTime.lastIndexOf("-");
+        Request.spread((res1, res2) => {
+          this.total = res1.data.message.length;
+          console.log("a", res1);
+          console.log("b", res2);
+          if (res1.data.resCode == 0 && res2.data.resCode == 0) {
+            let task_url = res2.data.message[0]["url"];
+            for (var item of res1.data.message) {
+              let execTime = item["exec_time"];
+              let lastIndex = execTime.lastIndexOf("-");
 
-            let newExecTime =
-              execTime.substr(0, lastIndex) +
-              " " +
-              execTime.substr(lastIndex + 1, execTime.length);
+              let newExecTime =
+                  execTime.substr(0, lastIndex) +
+                  " " +
+                  execTime.substr(lastIndex + 1, execTime.length);
 
-            let execResult = item["exec_result"];
-            let execCode = item["exec_code"];
-            let timestamp = item["_timestamp"];
-            let obj = {
-              execTime: newExecTime,
-              execResult: execResult,
-              execCode: execCode,
-              task_url: task_url,
-              dateTime: timestamp,
-            };
-            this.tableData.push(obj);
+              let execResult = item["exec_result"];
+              let execCode = item["exec_code"];
+              let timestamp = item["_timestamp"];
+              let obj = {
+                execTime: newExecTime,
+                execResult: execResult,
+                execCode: execCode,
+                task_url: task_url,
+                dateTime: timestamp,
+              };
+              this.tableData.push(obj);
+            }
+            this.loading = false;
+
           }
-          this.loading = false;
-
-        }
-      })
+        })
     );
     // then(res => {
     //   let data = res.data;
@@ -136,15 +144,15 @@ export default {
     // });
   },
   methods: {
-    clickToHistory (row) {
+    clickToHistory(row) {
       console.log(row);
       this.dialogDetailMessage = row.execResult;
       this.dialogVisible = true;
     },
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.pagesize = val;
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.currentPage = val;
     },
   },
@@ -155,6 +163,7 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
+
 .formInput {
   width: 30px;
 }
