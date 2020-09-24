@@ -7,7 +7,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TaskHistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TaskHistory.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/addHttpTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addHttpTask.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +100,7 @@
       <workItem from="1600565100735" duration="9987000" />
       <workItem from="1600696286510" duration="2474000" />
       <workItem from="1600865557497" duration="25000" />
-      <workItem from="1600955811304" duration="2653000" />
+      <workItem from="1600955811304" duration="2859000" />
     </task>
     <servers />
   </component>
@@ -159,6 +158,14 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="580" y="184" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1600865577839" />
+    <state x="-5" y="5" width="1453" height="788" key="MergeDialog" timestamp="1600959171721">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="-5" y="5" width="1453" height="788" key="MergeDialog/0.0.1600.860@0.0.1600.860" timestamp="1600959171721" />
+    <state x="435" y="189" key="MultipleFileMergeDialog" timestamp="1600959171728">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="435" y="189" key="MultipleFileMergeDialog/0.0.1600.860@0.0.1600.860" timestamp="1600959171728" />
     <state x="0" y="56" key="SettingsEditor" timestamp="1599901049048">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
