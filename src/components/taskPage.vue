@@ -77,6 +77,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button @click="clickSavePdf">sqweq</el-button>
       </template>
     </el-card>
 
@@ -261,6 +262,35 @@ export default {
         .catch((_) => {
         });
     },
+    clickSavePdf () {
+      let obj = {}
+
+      obj["fileKeyCode"] = "a18f7f13";
+
+      Request.post("/api/shareFile/download-user-file", obj, {
+        responseType: "blob"
+      })
+        .then(response => {
+          let fileName = response.headers["share-file-name"]
+          var blob = new Blob([response.data]);
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob); //创建下载的链接
+          downloadElement.href = href;
+          downloadElement.download = decodeURIComponent(fileName); //下载后文件名
+          document.body.appendChild(downloadElement);
+          downloadElement.click(); //点击下载
+          document.body.removeChild(downloadElement); //下载完成移除元素
+          window.URL.revokeObjectURL(href); //释放掉blob对象
+
+          console.log(response);
+          //    console.log(response);
+        })
+        .catch(response => {
+          console.log(response);
+        });
+      console.log(this.allData);
+      console.log("cccccc");
+    }
 
   }
 };
