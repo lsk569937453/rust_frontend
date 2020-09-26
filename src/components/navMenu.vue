@@ -30,8 +30,9 @@ export default {
     return {
       activeIndex: "taskPage",
       navMenuData: [
+        {index: "shareFile", name: "File Share"},
         {index: "taskPage", name: "Task List"},
-        // { index: "taskhistory", name: "任务历史" },
+
         // {
         //   index: "2",
         //   name: "我的工作台",

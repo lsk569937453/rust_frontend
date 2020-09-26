@@ -119,29 +119,7 @@ export default {
           }
         })
     );
-    // then(res => {
-    //   let data = res.data;
-    //   if (data.res_code == 0) {
-    //     for (var item of data.message) {
-    //       let execTime = item["exec_time"];
-    //       let lastIndex = execTime.lastIndexOf("-");
 
-    //       let newExecTime =
-    //         execTime.substr(0, lastIndex) +
-    //         " " +
-    //         execTime.substr(lastIndex + 1, execTime.length);
-
-    //       let execResult = item["exec_result"];
-    //       let execCode = item["exec_code"];
-    //       let obj = {
-    //         execTime: newExecTime,
-    //         execResult: execResult,
-    //         execCode: execCode
-    //       };
-    //       this.tableData.push(obj);
-    //     }
-    //   }
-    // });
   },
   methods: {
     clickToHistory(row) {

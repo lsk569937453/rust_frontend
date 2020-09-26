@@ -65,9 +65,11 @@ body .el-table th.gutter {
 body .el-table colgroup.gutter {
   display: table-cell !important;
 }
+
 .el-menu-vertical-demo {
   height: 100%;
 }
+
 .el-header {
   padding: 0px !important;
   background-color: #242f42;

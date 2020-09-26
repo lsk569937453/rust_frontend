@@ -29,7 +29,8 @@
         </el-form-item>
         <div class="login-btn">
           <el-button type="primary"
-                     @click="submitForm()">Sign In</el-button>
+                     @click="submitForm()">Sign In
+          </el-button>
         </div>
         <p class="login-tips">Tips : Fill in the user name and password randomly</p>
       </el-form>
@@ -42,7 +43,7 @@ import Request from "../utils/axiosUtils";
 
 export default {
   name: "login",
-  data () {
+  data() {
     return {
       param: {
         username: "admin",
@@ -50,17 +51,18 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          {required: true, message: "请输入用户名", trigger: "blur"},
         ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        password: [{required: true, message: "请输入密码", trigger: "blur"}],
       },
     };
   },
 
-  mounted () { },
+  mounted() {
+  },
   methods: {
-    submitForm () {
-      this.$router.push({ name: "taskPage" });
+    submitForm() {
+      this.$router.push({name: "shareFile"});
     },
   },
 };
@@ -74,6 +76,7 @@ export default {
   background-image: url(../../static/login-bg.jpg);
   background-size: 100%;
 }
+
 .loginDiv {
   position: absolute;
   left: 50%;
@@ -84,6 +87,7 @@ export default {
   background: hsla(0, 0%, 100%, 0.3);
   overflow: hidden;
 }
+
 .login-btn button {
   width: 100%;
   height: 36px;

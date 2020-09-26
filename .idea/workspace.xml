@@ -6,8 +6,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/fileShare/fileShare.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/addHttpTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addHttpTask.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TaskHistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TaskHistory.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/taskPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/taskPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +27,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
-        <option value="Vue Single File Component" />
         <option value="JavaScript File" />
+        <option value="Vue Single File Component" />
       </list>
     </option>
   </component>
@@ -47,7 +56,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../lsk569937453.github.io" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../aus_frontend" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -101,6 +110,7 @@
       <workItem from="1600696286510" duration="2474000" />
       <workItem from="1600865557497" duration="25000" />
       <workItem from="1600955811304" duration="2859000" />
+      <workItem from="1601070223800" duration="14984000" />
     </task>
     <servers />
   </component>
@@ -154,10 +164,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="125" y="200" key="EditFileWatcherDialog/0.0.1600.860@0.0.1600.860" timestamp="1599898699698" />
-    <state x="580" y="184" key="FileChooserDialogImpl" timestamp="1600865577839">
+    <state x="580" y="184" key="FileChooserDialogImpl" timestamp="1601044444573">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="580" y="184" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1600865577839" />
+    <state x="580" y="184" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1601044444573" />
     <state x="-5" y="5" width="1453" height="788" key="MergeDialog" timestamp="1600959171721">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
