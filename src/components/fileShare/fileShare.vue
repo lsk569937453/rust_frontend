@@ -1,7 +1,12 @@
 <template>
   <div>
     <el-card class="box-card">
-      <template v-if="pageStatus==3">
+      <input type="file"
+             id="file"
+             hidden
+             @change="fileChange"
+             multiple>
+      <template v-if="pageStatus<3">
         <el-row>
           <el-col :span="12">
             <div class="leftDiv"
@@ -17,14 +22,11 @@
                   <span>Or click here to transfer a maximum of 1GB files</span>
                 </div>
 
-                <input type="file"
-                       id="file"
-                       hidden
-                       @change="fileChange"
-                       multiple>
+
                 　
                 <el-button type="primary"
-                           @click="btnChange">Chose File</el-button>
+                           @click="btnChange">Chose File
+                </el-button>
 
               </div>
 
@@ -48,7 +50,7 @@
                           <div class="fileDesCls">
                             <span>{{ item.name }}</span>
                             <div style="margin-top: 5px">
-                              <span style="font-weight: normal">2.3MB</span>
+                              <span style="font-weight: normal">{{ getFileSize(item) }}</span>
                             </div>
                           </div>
                         </el-col>
@@ -57,7 +59,8 @@
                                 style="margin-top: 10px">
                           <el-button type="text"
                                      icon="el-icon-close"
-                                     style="font-size: 30px;color: gray"></el-button>
+                                     style="font-size: 30px;color: gray"
+                                     @click="deleteFile(item.name)"></el-button>
                           <!--                        <el-button type="info" icon="el-icon-close" circle></el-button>-->
                         </el-col>
                       </el-row>
@@ -67,11 +70,13 @@
                     <el-row>
                       <el-col :span="6">
                         <el-button type="primary"
-                                   icon="el-icon-circle-plus-outline">select files to upload</el-button>
+                                   icon="el-icon-circle-plus-outline"
+                                   @click="btnChange">select files to upload
+                        </el-button>
                       </el-col>
                       <el-col :span="6"
                               :offset="12">
-                        <span style="font-size: 20px">total:36M</span>
+                        <span style="font-size: 20px">total:{{ fileTotal }}</span>
                       </el-col>
                     </el-row>
                   </div>
@@ -120,7 +125,8 @@
                 <div class="realUploadButtonDiv">
                   <el-button type="primary"
                              class="realUploadButtonCls"
-                             @click="uploadFile">Upload</el-button>
+                             @click="uploadFile">Upload
+                  </el-button>
 
                 </div>
               </div>
@@ -129,8 +135,8 @@
               <div class="thirdDiv">
 
                 <el-card class="listItemcls"
-                         v-for="(item,i) in fileList"
-                         :key="i">
+                         v-for="(item,index) in fileList"
+                         :key="index">
                   <div style="margin-left:20px">
                     <el-row>
                       <el-col :span="2"
@@ -149,7 +155,7 @@
                     </el-row>
                     <el-row>
                       <el-col :span="24">
-                        <el-progress :percentage="0"></el-progress>
+                        <el-progress :percentage="uploadProgress[index]"></el-progress>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -168,23 +174,32 @@
           </el-col>
         </el-row>
       </template>
-      <div v-if="pageStatus==0"
-           style="min-height:500px;padding:200px">
-
-        <span style="font-weight:600;font-size:30px;">你的文件已加密并可以发送</span>
+      <div v-if="pageStatus==3"
+           style="min-height:500px;padding:100px">
+        <div style="margin-bottom: 40px">
+          <span style="font-weight:600;font-size:30px;">你的文件已加密并可以发送</span>
+        </div>
         <el-row>
           <el-col :span="8"
-                  :offset="8">
-            <el-input v-model="input"
+                  :offset="8" style="margin-bottom: 20px">
+            <div id="qrCode" ref="qrCodeDiv" style="margin-bottom: 20px;margin-left: 40px"></div>
+
+            <el-input v-model="downloadedUrl"
                       placeholder="请输入内容"></el-input>
           </el-col>
         </el-row>
+
 
         <el-row>
           <el-col :span="8"
                   :offset="8">
             <el-button type="primary"
-                       style="width:100%">复制链接</el-button>
+                       style="width:100%"
+                       v-clipboard:copy="downloadedUrl"
+                       v-clipboard:success="onCopy"
+                       v-clipboard:error="onError">复制链接
+
+            </el-button>
           </el-col>
         </el-row>
 
@@ -192,7 +207,8 @@
           <el-col :span="8"
                   :offset="8">
             <el-button type="text"
-                       style="width:100%">确定</el-button>
+                       style="width:100%">确定
+            </el-button>
           </el-col>
         </el-row>
 
@@ -205,32 +221,117 @@
 
 <script>
 import Request from "../../utils/axiosUtils";
+import QRCode from 'qrcodejs2';
+import FileUtils from '../../utils/fileUtils';
 
 export default {
   name: "fileShare",
-  data () {
+  data() {
     return {
+      uploadProgress: [],
+      downloadedUrl: "",
       pageStatus: 0,
       passwordInput: "",
       fileList: [],
+      fileTotal: "",
       passwordChecked: false,
 
     };
   },
+  mounted: function () {
+
+  },
   methods: {
-    uploadFile () {
+
+
+    getFileSize(file) {
+      return FileUtils.getFileSize(file.size)
+    },
+    onCopy: function (e) {
+      this.$message({
+        message: '恭喜你，这是一条成功消息',
+        type: 'success'
+      });
+    },
+    onError: function (e) {
+      alert('Failed to copy texts')
+    }
+    ,
+    bindQRCode: function () {
+      new QRCode(this.$refs.qrCodeDiv, {
+        text: 'https://www.baidu.com',
+
+        colorDark: "#333333", //二维码颜色
+        colorLight: "#ffffff", //二维码背景色
+        correctLevel: QRCode.CorrectLevel.L//容错率，L/M/H
+      })
+    },
+    uploadFile() {
       this.pageStatus = 2;
+      let reqArray = [];
+
+      for (var index in this.fileList) {
+        let temp = index;
+        var config = {
+          indexT: -1,
+          headers: {
+            "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
+          },
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.lengthComputable) {
+              var complete =
+                  (((progressEvent.loaded / progressEvent.total) * 100) | 0);
+              //  this.uploadProgress[index] = complete
+              this.$set(this.uploadProgress, index, complete);
+              // this.percent = complete
+              console.log(complete + index)
+              if (complete >= 100) {
+                //  this.uploadProgress[index] = 100
+                this.$set(this.uploadProgress, index, 100);
+                // this.show = false
+                // this.percent = 0; // 重新置0
+              }
+            }
+          },
+        };
+        var forms = new FormData()
+        forms.append('file', this.fileList[index])
+
+        // let form = {file: this.fileList[index]}
+        reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
+      }
+      Request.all(reqArray).then(Request.spread((res1, res2) => {
+          }
+          )
+      );
     },
-    deleteFile () {
+    deleteFile(fileName) {
+      this.fileList = this.fileList.filter(({name}) => name != fileName)
+      if (this.fileList.length == 0) {
+        this.pageStatus = 0;
+      }
+      this.reCountFileSize()
     },
-    fileChange (e) {
+    reCountFileSize() {
+      let fileSize = 0;
+      this.fileList.forEach(function (val, index, arr) {
+        fileSize = val.size + fileSize;
+      })
+
+      this.fileTotal = FileUtils.getFileSize(fileSize, 2)
+    },
+    fileChange(e) {
       const fu = this.getFile();
-      let array = [...this.fileList, ...fu]
-      this.fileList = array
+      let arr = [...this.fileList, ...fu]
+      this.fileList = arr;
+      //recount the total size
+      this.reCountFileSize();
+
+
       this.pageStatus = 1;
       console.log(fu)
     },
-    getFile () {
+    getFile() {
       var file = document.getElementById('file');
       if (file.files.length == 0) {
         this.$message('没有选择文件');
@@ -238,32 +339,32 @@ export default {
       }
       return file.files;
     },
-    btnChange () {
+    btnChange() {
       var file = document.getElementById('file');
       file.click();
     },
-    handleRemove (file, fileList) {
+    handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    handlePreview (file) {
+    handlePreview(file) {
       console.log(file);
     },
-    handleExceed (files, fileList) {
+    handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
-    beforeRemove (file, fileList) {
+    beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
-    submitUpload () {
+    submitUpload() {
       this.$refs.upload.submit();
     },
-    upLoadSuccess (response, file, fileList) {
+    upLoadSuccess(response, file, fileList) {
       console.log(response)
       if (response.responseCode === 0) {
       }
     },
 
-    clickSavePdf () {
+    clickSavePdf() {
       let obj = {}
 
       obj["fileKeyCode"] = "a18f7f13";
@@ -271,27 +372,27 @@ export default {
       Request.post("/api/shareFile/download-user-file", obj, {
         responseType: "blob"
       })
-        .then(response => {
-          if (response.status !== 200) {
-            return;
-          }
-          let fileName = response.headers["share-file-name"]
-          var blob = new Blob([response.data]);
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob); //创建下载的链接
-          downloadElement.href = href;
-          downloadElement.download = decodeURIComponent(fileName); //下载后文件名
-          document.body.appendChild(downloadElement);
-          downloadElement.click(); //点击下载
-          document.body.removeChild(downloadElement); //下载完成移除元素
-          window.URL.revokeObjectURL(href); //释放掉blob对象
+          .then(response => {
+            if (response.status !== 200) {
+              return;
+            }
+            let fileName = response.headers["share-file-name"]
+            var blob = new Blob([response.data]);
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob); //创建下载的链接
+            downloadElement.href = href;
+            downloadElement.download = decodeURIComponent(fileName); //下载后文件名
+            document.body.appendChild(downloadElement);
+            downloadElement.click(); //点击下载
+            document.body.removeChild(downloadElement); //下载完成移除元素
+            window.URL.revokeObjectURL(href); //释放掉blob对象
 
-          console.log(response);
-          //    console.log(response);
-        })
-        .catch(response => {
-          console.log(response);
-        });
+            console.log(response);
+            //    console.log(response);
+          })
+          .catch(response => {
+            console.log(response);
+          });
       console.log(this.allData);
       console.log("cccccc");
     }
@@ -303,6 +404,7 @@ export default {
 .thirdDiv /deep/ .el-card__body {
   padding: 0px;
 }
+
 .realUploadButtonDiv {
   margin-top: 20px;
   margin-bottom: 20px;

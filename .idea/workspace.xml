@@ -6,17 +6,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/fileShare/fileShare.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/fileUtils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TaskHistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TaskHistory.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navMenu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/taskPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/taskPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/fileShare/fileShare.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/fileShare/fileShare.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +22,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
-        <option value="JavaScript File" />
         <option value="Vue Single File Component" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -110,7 +105,8 @@
       <workItem from="1600696286510" duration="2474000" />
       <workItem from="1600865557497" duration="25000" />
       <workItem from="1600955811304" duration="2859000" />
-      <workItem from="1601070223800" duration="14984000" />
+      <workItem from="1601070223800" duration="15104000" />
+      <workItem from="1601211778036" duration="7261000" />
     </task>
     <servers />
   </component>
@@ -180,10 +176,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="0" y="56" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1599901049048" />
-    <state x="502" y="28" width="596" height="804" key="find.popup" timestamp="1599912083790">
+    <state x="502" y="28" width="596" height="804" key="find.popup" timestamp="1601216164522">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="502" y="28" width="596" height="804" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1599912083790" />
+    <state x="502" y="28" width="596" height="804" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1601216164522" />
     <state x="456" y="190" key="run.anything.popup" timestamp="1599904149001">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
