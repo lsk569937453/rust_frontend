@@ -63,6 +63,10 @@ export default {
   background: rgb(40, 52, 70) !important;
 }
 
+#NavMenu /deep/ .el-menu-item {
+  font-weight: 600;
+}
+
 .el-submenu__title:hover {
   background: rgb(40, 52, 70) !important;
 }

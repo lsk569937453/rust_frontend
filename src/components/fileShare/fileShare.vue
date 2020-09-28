@@ -6,11 +6,11 @@
              hidden
              @change="fileChange"
              multiple>
-      <template v-if="pageStatus<3">
+      <template v-if="pageStatus<=3">
         <el-row>
           <el-col :span="12">
             <div class="leftDiv"
-                 v-if="pageStatus==0">
+                 v-if="pageStatus==0" @click="btnChange" ref='select_frame'  ondragstart="return false">
               <div class="innerDiv">
                 <div class="plsIcon">
                   <i class="el-icon-circle-plus-outline"></i>
@@ -21,9 +21,6 @@
                 <div class="orTextCls">
                   <span>Or click here to transfer a maximum of 1GB files</span>
                 </div>
-
-
-                　
                 <el-button type="primary"
                            @click="btnChange">Chose File
                 </el-button>
@@ -131,7 +128,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="pageStatus==2">
+            <div v-if="pageStatus==2||pageStatus==3">
               <div class="thirdDiv">
 
                 <el-card class="listItemcls"
@@ -146,22 +143,26 @@
                       </el-col>
                       <el-col :span="20">
                         <div class="fileDesCls">
-                          <span>{{ item.name }}</span>
+                          <span style="font-weight: 550">{{ item.name }}</span>
                           <div style="margin-top: 5px">
-                            <span style="font-weight: normal">2.3MB</span>
+                            <span style="font-weight: normal">{{ getFileSize(item) }}</span>
                           </div>
                         </div>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="24">
-                        <el-progress :percentage="uploadProgress[index]"></el-progress>
+
+                        <el-progress v-if="uploadProgress[index].status==''" :percentage="uploadProgress[index].percent"
+                        ></el-progress>
+                        <el-progress v-if="uploadProgress[index].status!=''" :percentage="uploadProgress[index].percent"
+                                     :status="uploadProgress[index].status"></el-progress>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="2"
                               :offset="21">
-                        <el-button type="text">cancel</el-button>
+                        <el-button v-if="uploadProgress[index].status==''" type="text">cancel</el-button>
                       </el-col>
                     </el-row>
                   </div>
@@ -170,49 +171,51 @@
             </div>
           </el-col>
           <el-col :span="12">
-            <div class="grid-content bg-purple-light">ttt</div>
+            <div v-if="pageStatus==3"
+                 style="padding:50px">
+              <div style="margin-bottom: 40px">
+                <span style="font-weight:600;font-size:30px;">Your File Is Encrypted And Can Be Sent
+                </span>
+              </div>
+              <el-row>
+                <el-col :span="8"
+                        :offset="6" style="margin-bottom: 20px">
+                  <div id="qrCode" ref="qrCodeDiv"></div>
+
+                </el-col>
+              </el-row>
+
+
+              <el-row>
+                <el-col :span="12"
+                        :offset="6">
+                  <el-input v-model="downloadedUrl"
+                            placeholder="请输入内容" style="margin-bottom: 20px"></el-input>
+                  <el-button type="primary"
+                             style="width:100%"
+                             v-clipboard:copy="downloadedUrl"
+                             v-clipboard:success="onCopy"
+                             v-clipboard:error="onError">Copy link
+
+
+                  </el-button>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="8"
+                        :offset="8">
+                  <el-button type="text"
+                             style="width:100%">OK
+                  </el-button>
+                </el-col>
+              </el-row>
+
+            </div>
           </el-col>
         </el-row>
       </template>
-      <div v-if="pageStatus==3"
-           style="min-height:500px;padding:100px">
-        <div style="margin-bottom: 40px">
-          <span style="font-weight:600;font-size:30px;">你的文件已加密并可以发送</span>
-        </div>
-        <el-row>
-          <el-col :span="8"
-                  :offset="8" style="margin-bottom: 20px">
-            <div id="qrCode" ref="qrCodeDiv" style="margin-bottom: 20px;margin-left: 40px"></div>
 
-            <el-input v-model="downloadedUrl"
-                      placeholder="请输入内容"></el-input>
-          </el-col>
-        </el-row>
-
-
-        <el-row>
-          <el-col :span="8"
-                  :offset="8">
-            <el-button type="primary"
-                       style="width:100%"
-                       v-clipboard:copy="downloadedUrl"
-                       v-clipboard:success="onCopy"
-                       v-clipboard:error="onError">复制链接
-
-            </el-button>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="8"
-                  :offset="8">
-            <el-button type="text"
-                       style="width:100%">确定
-            </el-button>
-          </el-col>
-        </el-row>
-
-      </div>
 
     </el-card>
 
@@ -239,6 +242,28 @@ export default {
     };
   },
   mounted: function () {
+    this.$refs.select_frame.ondragleave = (e) => {
+      e.preventDefault()  // 阻止离开时的浏览器默认行为
+    }
+    this.$refs.select_frame.ondrop = (e) => {
+      e.preventDefault()    // 阻止拖放后的浏览器默认行为
+      const data = e.dataTransfer.files  // 获取文件对象
+      if (data.length < 1) {
+        return  // 检测是否有文件拖拽到页面
+      }
+      console.log(data)
+      this.fileList.push(data)
+      this.pageStatus=1;
+      this.reCountFileSize();
+    //  this.upload(data)//上传文件的方法
+    }
+    this.$refs.select_frame.ondragenter = (e) => {
+      e.preventDefault()  // 阻止拖入时的浏览器默认行为
+      this.$refs.select_frame.border = '2px dashed red'
+    }
+    this.$refs.select_frame.ondragover = (e) => {
+      e.preventDefault()    // 阻止拖来拖去的浏览器默认行为
+    }
 
   },
   methods: {
@@ -249,7 +274,7 @@ export default {
     },
     onCopy: function (e) {
       this.$message({
-        message: '恭喜你，这是一条成功消息',
+        message: 'Successfully copied to pasteboard',
         type: 'success'
       });
     },
@@ -259,7 +284,7 @@ export default {
     ,
     bindQRCode: function () {
       new QRCode(this.$refs.qrCodeDiv, {
-        text: 'https://www.baidu.com',
+        text: this.downloadedUrl,
 
         colorDark: "#333333", //二维码颜色
         colorLight: "#ffffff", //二维码背景色
@@ -268,12 +293,18 @@ export default {
     },
     uploadFile() {
       this.pageStatus = 2;
+
       let reqArray = [];
 
       for (var index in this.fileList) {
         let temp = index;
+        let obj = {
+          percent: 0,
+          status: "",
+        };
+        this.uploadProgress.push(obj);
+
         var config = {
-          indexT: -1,
           headers: {
             "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
           },
@@ -281,13 +312,17 @@ export default {
             if (progressEvent.lengthComputable) {
               var complete =
                   (((progressEvent.loaded / progressEvent.total) * 100) | 0);
-              //  this.uploadProgress[index] = complete
-              this.$set(this.uploadProgress, index, complete);
+              let obj = {
+                percent: complete,
+                status: "",
+              }
+              this.$set(this.uploadProgress, temp, obj);
               // this.percent = complete
-              console.log(complete + index)
+              console.log(complete + temp)
               if (complete >= 100) {
+                obj.status = "success";
                 //  this.uploadProgress[index] = 100
-                this.$set(this.uploadProgress, index, 100);
+                this.$set(this.uploadProgress, temp, obj);
                 // this.show = false
                 // this.percent = 0; // 重新置0
               }
@@ -300,10 +335,27 @@ export default {
         // let form = {file: this.fileList[index]}
         reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
       }
-      Request.all(reqArray).then(Request.spread((res1, res2) => {
+      Request.all(reqArray).then(Request.spread((...res) => {
+            this.pageStatus = 3;
+            this.getQRcode();
+            setTimeout(() => {
+              this.bindQRCode();
+            }, 100)
+
           }
           )
-      );
+      ).catch(errors => {
+        console.log(errors)
+      });
+    },
+    getQRcode(res) {
+      if (res === undefined)
+        res = 0;
+      if (process.env.NODE_ENV === "development") {
+        this.downloadedUrl = "http://lskyy.top/admin/api/shareFile/download-user-file" + res
+      } else {
+        this.downloadedUrl = "http://localhost:9393/api/shareFile/download-user-file" + res;
+      }
     },
     deleteFile(fileName) {
       this.fileList = this.fileList.filter(({name}) => name != fileName)
@@ -343,26 +395,7 @@ export default {
       var file = document.getElementById('file');
       file.click();
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-    upLoadSuccess(response, file, fileList) {
-      console.log(response)
-      if (response.responseCode === 0) {
-      }
-    },
+
 
     clickSavePdf() {
       let obj = {}
@@ -415,6 +448,7 @@ export default {
   margin-top: 10px;
   margin-left: 10px;
   padding: 5px;
+
 }
 
 .realUploadButtonCls {
