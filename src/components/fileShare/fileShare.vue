@@ -10,7 +10,7 @@
         <el-row>
           <el-col :span="12">
             <div class="leftDiv"
-                 v-if="pageStatus==0" @click="btnChange" ref='select_frame'  ondragstart="return false">
+                 v-if="pageStatus==0" @click="btnChange" ref='select_frame' ondragstart="return false">
               <div class="innerDiv">
                 <div class="plsIcon">
                   <i class="el-icon-circle-plus-outline"></i>
@@ -171,7 +171,16 @@
             </div>
           </el-col>
           <el-col :span="12">
-            <div v-if="pageStatus==3"
+            <div v-if="pageStatus!=3">
+              <el-card style="margin: 20px">
+                <h3>Salute The Mozilla/Send</h3>
+                <h4>This tool pays homage to Mozilla / send. Its main function is to share files anonymously. The front
+                  end is encrypted by aes-gcm algorithm, so anyone without a secret key cannot view the files you share.
+                  This project is only for learning.
+                </h4>
+              </el-card>
+            </div>
+            <div v-if=" pageStatus==3"
                  style="padding:50px">
               <div style="margin-bottom: 40px">
                 <span style="font-weight:600;font-size:30px;">Your File Is Encrypted And Can Be Sent
@@ -215,7 +224,11 @@
           </el-col>
         </el-row>
       </template>
-
+      <template v-if="pageStatus==4">
+        <div>
+          <el-button @click="clickSavePdf">点击下载</el-button>
+        </div>
+      </template>
 
     </el-card>
 
@@ -226,15 +239,22 @@
 import Request from "../../utils/axiosUtils";
 import QRCode from 'qrcodejs2';
 import FileUtils from '../../utils/fileUtils';
+import encryUtils from "../../utils/encryUtils";
+import CryptoJS from 'crypto-js'
+import TemplatePage from "../TemplatePage";
+
 
 export default {
   name: "fileShare",
+  components: {TemplatePage},
   data() {
     return {
+      fileKeyCode: "",
+      password: "",
       uploadProgress: [],
       downloadedUrl: "",
       pageStatus: 0,
-      passwordInput: "",
+      passwordInput: "123456",
       fileList: [],
       fileTotal: "",
       passwordChecked: false,
@@ -242,33 +262,42 @@ export default {
     };
   },
   mounted: function () {
-    this.$refs.select_frame.ondragleave = (e) => {
-      e.preventDefault()  // 阻止离开时的浏览器默认行为
+    let fileKeyCode = this.$route.query.fileKeyCode;
+    if (fileKeyCode === undefined || fileKeyCode === null) {
+      this.initDrag();
+    } else {
+      this.fileKeyCode = fileKeyCode;
+      this.pageStatus = 4;
     }
-    this.$refs.select_frame.ondrop = (e) => {
-      e.preventDefault()    // 阻止拖放后的浏览器默认行为
-      const data = e.dataTransfer.files  // 获取文件对象
-      if (data.length < 1) {
-        return  // 检测是否有文件拖拽到页面
-      }
-      console.log(data)
-      this.fileList.push(data)
-      this.pageStatus=1;
-      this.reCountFileSize();
-    //  this.upload(data)//上传文件的方法
-    }
-    this.$refs.select_frame.ondragenter = (e) => {
-      e.preventDefault()  // 阻止拖入时的浏览器默认行为
-      this.$refs.select_frame.border = '2px dashed red'
-    }
-    this.$refs.select_frame.ondragover = (e) => {
-      e.preventDefault()    // 阻止拖来拖去的浏览器默认行为
-    }
+    console.log(this.pageStatus)
 
   },
   methods: {
 
-
+    initDrag() {
+      this.$refs.select_frame.ondragleave = (e) => {
+        e.preventDefault()  // 阻止离开时的浏览器默认行为
+      }
+      this.$refs.select_frame.ondrop = (e) => {
+        e.preventDefault()    // 阻止拖放后的浏览器默认行为
+        const data = e.dataTransfer.files  // 获取文件对象
+        if (data.length < 1) {
+          return  // 检测是否有文件拖拽到页面
+        }
+        console.log(data)
+        this.fileList.push(data)
+        this.pageStatus = 1;
+        this.reCountFileSize();
+        //  this.upload(data)//上传文件的方法
+      }
+      this.$refs.select_frame.ondragenter = (e) => {
+        e.preventDefault()  // 阻止拖入时的浏览器默认行为
+        this.$refs.select_frame.border = '2px dashed red'
+      }
+      this.$refs.select_frame.ondragover = (e) => {
+        e.preventDefault()    // 阻止拖来拖去的浏览器默认行为
+      }
+    },
     getFileSize(file) {
       return FileUtils.getFileSize(file.size)
     },
@@ -291,7 +320,7 @@ export default {
         correctLevel: QRCode.CorrectLevel.L//容错率，L/M/H
       })
     },
-    uploadFile() {
+    async uploadFile() {
       this.pageStatus = 2;
 
       let reqArray = [];
@@ -330,14 +359,16 @@ export default {
           },
         };
         var forms = new FormData()
-        forms.append('file', this.fileList[index])
+        var newFile = await this.encrypt(this.fileList[index]);
+        forms.append('file', newFile)
 
         // let form = {file: this.fileList[index]}
         reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
       }
       Request.all(reqArray).then(Request.spread((...res) => {
             this.pageStatus = 3;
-            this.getQRcode();
+            this.fileKeyCode = res[0].data.message;
+            this.getQRcode(this.fileKeyCode);
             setTimeout(() => {
               this.bindQRCode();
             }, 100)
@@ -348,22 +379,39 @@ export default {
         console.log(errors)
       });
     },
+    encrypt(file) {
+
+      return new Promise((resolve, reject) => {
+        var fr = new FileReader();
+        fr.readAsDataURL(file);
+        fr.onload = () => {
+          console.log("password" + this.password);
+          var encrypted = CryptoJS.AES.encrypt(fr.result, this.password);
+          var encryptedFile = new File([encrypted], file.name, null);
+          resolve(encryptedFile)
+        };
+      });
+
+
+    },
     getQRcode(res) {
       if (res === undefined)
         res = 0;
       if (process.env.NODE_ENV === "development") {
-        this.downloadedUrl = "http://lskyy.top/admin/api/shareFile/download-user-file" + res
+        this.downloadedUrl = "http://localhost:8080/#/shareFile?fileKeyCode=" + res
       } else {
-        this.downloadedUrl = "http://localhost:9393/api/shareFile/download-user-file" + res;
+        this.downloadedUrl = "http://lskyy.top/admin/#/shareFile?fileKeyCode=" + res;
       }
-    },
+    }
+    ,
     deleteFile(fileName) {
       this.fileList = this.fileList.filter(({name}) => name != fileName)
       if (this.fileList.length == 0) {
         this.pageStatus = 0;
       }
       this.reCountFileSize()
-    },
+    }
+    ,
     reCountFileSize() {
       let fileSize = 0;
       this.fileList.forEach(function (val, index, arr) {
@@ -371,7 +419,8 @@ export default {
       })
 
       this.fileTotal = FileUtils.getFileSize(fileSize, 2)
-    },
+    }
+    ,
     fileChange(e) {
       const fu = this.getFile();
       let arr = [...this.fileList, ...fu]
@@ -382,50 +431,60 @@ export default {
 
       this.pageStatus = 1;
       console.log(fu)
-    },
+    }
+    ,
     getFile() {
       var file = document.getElementById('file');
       if (file.files.length == 0) {
-        this.$message('没有选择文件');
+        this.$message('No file selected');
         return null;
       }
       return file.files;
-    },
+    }
+    ,
     btnChange() {
       var file = document.getElementById('file');
       file.click();
-    },
+    }
+    ,
 
 
     clickSavePdf() {
       let obj = {}
 
-      obj["fileKeyCode"] = "a18f7f13";
+      obj["fileKeyCode"] = this.fileKeyCode;
 
       Request.post("/api/shareFile/download-user-file", obj, {
         responseType: "blob"
       })
           .then(response => {
-            if (response.status !== 200) {
-              return;
-            }
-            let fileName = response.headers["share-file-name"]
-            var blob = new Blob([response.data]);
-            var downloadElement = document.createElement("a");
-            var href = window.URL.createObjectURL(blob); //创建下载的链接
-            downloadElement.href = href;
-            downloadElement.download = decodeURIComponent(fileName); //下载后文件名
-            document.body.appendChild(downloadElement);
-            downloadElement.click(); //点击下载
-            document.body.removeChild(downloadElement); //下载完成移除元素
-            window.URL.revokeObjectURL(href); //释放掉blob对象
+                if (response.status !== 200) {
+                  return;
+                }
+                let fileName = response.headers["share-file-name"]
+                var blob = new Blob([response.data]);
+                // let reader = new FileReader();
+            // reader.onload = function (result) {
+            //   console.log(result);
+            // }
+            // reader.readAsArrayBuffer(blob);
+            // var encrypted = CryptoJS.AES.decrypt([reader.result], this.password);
+            // var blob = new Blob([encrypted]);
+                var downloadElement = document.createElement("a");
+                var href = window.URL.createObjectURL(blob); //创建下载的链接
+                downloadElement.href = href;
+                downloadElement.download = decodeURIComponent(fileName); //下载后文件名
+                document.body.appendChild(downloadElement);
+                downloadElement.click(); //点击下载
+                document.body.removeChild(downloadElement); //下载完成移除元素
+                window.URL.revokeObjectURL(href); //释放掉blob对象
 
-            console.log(response);
-            //    console.log(response);
-          })
-          .catch(response => {
-            console.log(response);
-          });
+                console.log(response);
+                //    console.log(response);
+              }
+          ).catch(response => {
+        console.log(response);
+      });
       console.log(this.allData);
       console.log("cccccc");
     }

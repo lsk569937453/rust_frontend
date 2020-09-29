@@ -6,10 +6,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad3c40e7-a948-4086-b091-3ae4d1690c9f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/utils/encryUtils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/addGrpcTask.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/addGrpcTask.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/fileShare/fileShare.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/fileShare/fileShare.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mainPageHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mainPageHeader.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/navMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +111,8 @@
       <workItem from="1601211778036" duration="7261000" />
       <workItem from="1601250271242" duration="368000" />
       <workItem from="1601250772631" duration="5262000" />
+      <workItem from="1601386185567" duration="1537000" />
+      <workItem from="1601387739691" duration="6562000" />
     </task>
     <servers />
   </component>
@@ -156,10 +162,15 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2114" y="360" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601249180561">
-      <screen x="1440" y="23" width="1852" height="1057" />
+    <state x="582" y="274" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601390633587">
+      <screen x="0" y="0" width="1600" height="860" />
     </state>
+    <state x="582" y="274" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1600.860@0.0.1600.860" timestamp="1601390633587" />
     <state x="2114" y="360" key="#com.intellij.fileTypes.FileTypeChooser/1440.23.1852.1057/0.23.1440.877@1440.23.1852.1057" timestamp="1601249180561" />
+    <state x="530" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601390217672">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="530" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1600.860@0.0.1600.860" timestamp="1601390217672" />
     <state x="125" y="200" key="EditFileWatcherDialog" timestamp="1599898699698">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -181,10 +192,10 @@
     </state>
     <state x="0" y="56" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1599901049048" />
     <state x="1836" y="198" key="SettingsEditor/1440.23.1852.1057/0.23.1440.877@1440.23.1852.1057" timestamp="1601251111605" />
-    <state x="2021" y="57" width="690" height="989" key="find.popup" timestamp="1601253974798">
-      <screen x="1440" y="23" width="1852" height="1057" />
+    <state x="502" y="28" width="596" height="804" key="find.popup" timestamp="1601387779015">
+      <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="502" y="28" width="596" height="804" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1601216164522" />
+    <state x="502" y="28" width="596" height="804" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1601387779015" />
     <state x="2021" y="57" width="690" height="989" key="find.popup/1440.23.1852.1057/0.23.1440.877@1440.23.1852.1057" timestamp="1601253974798" />
     <state x="456" y="190" key="run.anything.popup" timestamp="1599904149001">
       <screen x="0" y="0" width="1600" height="860" />
