@@ -39,7 +39,6 @@ export default {
                         path: "/shareFile",
                         name: "shareFile",
                         component: () => import(/* webpackChunkName: "index" */ './components/fileShare/fileShare.vue'),
-
                     }
                 ]
             },

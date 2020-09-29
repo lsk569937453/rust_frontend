@@ -9,7 +9,7 @@
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>退出登录</el-dropdown-item>
+        <el-dropdown-item>Log out</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <div class="readtitle">
