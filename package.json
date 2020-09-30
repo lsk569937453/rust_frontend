@@ -18,6 +18,7 @@
     "axios": "^0.19.0",
     "element-ui": "^2.0.4",
     "font-awesome": "^4.7.0",
+    "js-base64": "^3.5.2",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
     "qrcodejs2": "0.0.2",

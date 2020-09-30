@@ -239,9 +239,10 @@
 import Request from "../../utils/axiosUtils";
 import QRCode from 'qrcodejs2';
 import FileUtils from '../../utils/fileUtils';
-import encryUtils from "../../utils/encryUtils";
 import CryptoJS from 'crypto-js'
 import TemplatePage from "../TemplatePage";
+
+let Base64 = require('js-base64').Base64;
 
 
 export default {
@@ -250,7 +251,7 @@ export default {
   data() {
     return {
       fileKeyCode: "",
-      password: "",
+      password: "123456",
       uploadProgress: [],
       downloadedUrl: "",
       pageStatus: 0,
@@ -383,10 +384,15 @@ export default {
 
       return new Promise((resolve, reject) => {
         var fr = new FileReader();
-        fr.readAsDataURL(file);
+        fr.readAsArrayBuffer(file);
         fr.onload = () => {
           console.log("password" + this.password);
-          var encrypted = CryptoJS.AES.encrypt(fr.result, this.password);
+          let buffer = Buffer.from(fr.result).toString('base64')
+          console.log("res:" + buffer);
+          var encrypted = CryptoJS.AES.encrypt(buffer, this.password, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+          }).toString();
           var encryptedFile = new File([encrypted], file.name, null);
           resolve(encryptedFile)
         };
@@ -455,23 +461,23 @@ export default {
       obj["fileKeyCode"] = this.fileKeyCode;
 
       Request.post("/api/shareFile/download-user-file", obj, {
-        responseType: "blob"
+        responseType: "arraybuffer"
       })
           .then(response => {
                 if (response.status !== 200) {
                   return;
                 }
                 let fileName = response.headers["share-file-name"]
-                var blob = new Blob([response.data]);
-                // let reader = new FileReader();
-            // reader.onload = function (result) {
-            //   console.log(result);
-            // }
-            // reader.readAsArrayBuffer(blob);
-            // var encrypted = CryptoJS.AES.decrypt([reader.result], this.password);
-            // var blob = new Blob([encrypted]);
-                var downloadElement = document.createElement("a");
-                var href = window.URL.createObjectURL(blob); //创建下载的链接
+                let read = Buffer.from(response.data, 'binary').toString();
+                let encrypted = CryptoJS.AES.decrypt(read, this.password, {
+                  mode: CryptoJS.mode.ECB,
+                  padding: CryptoJS.pad.Pkcs7
+                });
+                let originalBase64text = encrypted.toString(CryptoJS.enc.Utf8);
+                let originalText = Base64.decode(originalBase64text);
+                let blob = new Blob([originalText], {type: "application/octet-stream"});
+                let downloadElement = document.createElement("a");
+                let href = window.URL.createObjectURL(blob); //创建下载的链接
                 downloadElement.href = href;
                 downloadElement.download = decodeURIComponent(fileName); //下载后文件名
                 document.body.appendChild(downloadElement);
@@ -479,8 +485,6 @@ export default {
                 document.body.removeChild(downloadElement); //下载完成移除元素
                 window.URL.revokeObjectURL(href); //释放掉blob对象
 
-                console.log(response);
-                //    console.log(response);
               }
           ).catch(response => {
         console.log(response);
