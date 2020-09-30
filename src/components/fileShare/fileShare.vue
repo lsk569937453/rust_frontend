@@ -386,13 +386,14 @@ export default {
         var fr = new FileReader();
         fr.readAsArrayBuffer(file);
         fr.onload = () => {
-          console.log("password" + this.password);
+          console.log("password" + fr.result);
           let buffer = Buffer.from(fr.result).toString('base64')
-          console.log("res:" + buffer);
+          console.log("src1:" + buffer);
           var encrypted = CryptoJS.AES.encrypt(buffer, this.password, {
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
           }).toString();
+          console.log("src2:" + encrypted);
           var encryptedFile = new File([encrypted], file.name, null);
           resolve(encryptedFile)
         };
@@ -469,12 +470,18 @@ export default {
                 }
                 let fileName = response.headers["share-file-name"]
                 let read = Buffer.from(response.data, 'binary').toString();
+                console.log("dst1:" + read)
                 let encrypted = CryptoJS.AES.decrypt(read, this.password, {
                   mode: CryptoJS.mode.ECB,
                   padding: CryptoJS.pad.Pkcs7
                 });
-                let originalBase64text = encrypted.toString(CryptoJS.enc.Utf8);
+                console.log("dst2:" + encrypted)
+
+                let originalBase64text = encrypted.toString();
+                console.log("dst3:" + originalBase64text)
+
                 let originalText = Base64.decode(originalBase64text);
+                console.log("dst4:" + originalText)
                 let blob = new Blob([originalText], {type: "application/octet-stream"});
                 let downloadElement = document.createElement("a");
                 let href = window.URL.createObjectURL(blob); //创建下载的链接
