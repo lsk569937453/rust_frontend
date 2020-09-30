@@ -22,7 +22,7 @@
                   <span>Or click here to transfer a maximum of 1GB files</span>
                 </div>
                 <el-button type="primary"
-                           @click="btnChange">Chose File
+                           @click="btnChange" @click.stop>Chose File
                 </el-button>
 
               </div>
@@ -241,6 +241,7 @@ import QRCode from 'qrcodejs2';
 import FileUtils from '../../utils/fileUtils';
 import CryptoJS from 'crypto-js'
 import TemplatePage from "../TemplatePage";
+import encryUtils from "../../utils/encryUtils";
 
 let Base64 = require('js-base64').Base64;
 
@@ -251,7 +252,7 @@ export default {
   data() {
     return {
       fileKeyCode: "",
-      password: "123456",
+      password: "0ca175b9c0f726a831d895e269332461",
       uploadProgress: [],
       downloadedUrl: "",
       pageStatus: 0,
@@ -263,6 +264,7 @@ export default {
     };
   },
   mounted: function () {
+   
     let fileKeyCode = this.$route.query.fileKeyCode;
     if (fileKeyCode === undefined || fileKeyCode === null) {
       this.initDrag();
@@ -386,21 +388,27 @@ export default {
         var fr = new FileReader();
         fr.readAsArrayBuffer(file);
         fr.onload = () => {
-          console.log("password" + fr.result);
-          let buffer = Buffer.from(fr.result).toString('base64')
-          console.log("src1:" + buffer);
-          var encrypted = CryptoJS.AES.encrypt(buffer, this.password, {
-            mode: CryptoJS.mode.ECB,
-            padding: CryptoJS.pad.Pkcs7
-          }).toString();
-          console.log("src2:" + encrypted);
-          var encryptedFile = new File([encrypted], file.name, null);
+          let buffer = Buffer.from(fr.result);
+          buffer = buffer.toString("base64")
+          let entrString = encryUtils.encrypt(buffer, this.password)
+          let encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(entrString));
+          let arra = this.str2ab(encData);
+          var encryptedFile = new File([arra], file.name, null);
           resolve(encryptedFile)
         };
       });
 
 
     },
+    str2ab(str) {
+      var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
+      var bufView = new Uint16Array(buf);
+      for (var i = 0, strLen = str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+      }
+      return buf;
+    }
+    ,
     getQRcode(res) {
       if (res === undefined)
         res = 0;
@@ -454,7 +462,17 @@ export default {
       file.click();
     }
     ,
-
+    constructArray(data) {
+      let array = new Uint16Array(data)
+      var res = '';
+      var chunk = 8 * 1024;
+      var i;
+      for (i = 0; i < array.length / chunk; i++) {
+        res += String.fromCharCode.apply(null, array.slice(i * chunk, (i + 1) * chunk));
+      }
+      res += String.fromCharCode.apply(null, array.slice(i * chunk));
+      return res;
+    },
 
     clickSavePdf() {
       let obj = {}
@@ -469,20 +487,11 @@ export default {
                   return;
                 }
                 let fileName = response.headers["share-file-name"]
-                let read = Buffer.from(response.data, 'binary').toString();
-                console.log("dst1:" + read)
-                let encrypted = CryptoJS.AES.decrypt(read, this.password, {
-                  mode: CryptoJS.mode.ECB,
-                  padding: CryptoJS.pad.Pkcs7
-                });
-                console.log("dst2:" + encrypted)
-
-                let originalBase64text = encrypted.toString();
-                console.log("dst3:" + originalBase64text)
-
-                let originalText = Base64.decode(originalBase64text);
-                console.log("dst4:" + originalText)
-                let blob = new Blob([originalText], {type: "application/octet-stream"});
+                let readsxxx = this.constructArray(response.data);
+                let decDataxx = CryptoJS.enc.Base64.parse(readsxxx).toString(CryptoJS.enc.Utf8);
+                let res = encryUtils.decrypt(decDataxx, this.password)
+                let rawStr = Buffer.from(res, 'base64');
+                let blob = new Blob([rawStr]);
                 let downloadElement = document.createElement("a");
                 let href = window.URL.createObjectURL(blob); //创建下载的链接
                 downloadElement.href = href;

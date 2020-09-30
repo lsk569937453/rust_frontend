@@ -2,14 +2,13 @@
 
 import cryptoJs from 'crypto-js'
 
-let keyOne = '313233343536373a'
 
 export default {
     // 加密函數
-    encrypt(word) {
+    encrypt(word, password) {
         console.log(word)
-        console.log('秘钥长度为：', keyOne.length)
-        let key = cryptoJs.enc.Hex.parse(keyOne)
+
+        let key = cryptoJs.enc.Hex.parse(password)
         let enc = ''
         if (typeof word === 'string') {
             enc = cryptoJs.AES.encrypt(word, key, {
@@ -29,9 +28,8 @@ export default {
         return encResult
     },
     // 解密函數
-    decrypt(word) {
-        console.log('传入的密文：', word)
-        let key = cryptoJs.enc.Hex.parse(keyOne)
+    decrypt(word, password) {
+        let key = cryptoJs.enc.Hex.parse(password)
         let dec = cryptoJs.AES.decrypt(cryptoJs.format.Hex.parse(word), key, {
             // vi: vi
             mode: cryptoJs.mode.ECB,
