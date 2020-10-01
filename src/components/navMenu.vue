@@ -1,7 +1,7 @@
 <template>
   <div id="NavMenu">
     <el-menu
-        :default-active="activeIndex"
+        :default-active="activeMenu"
         class="el-menu-vertical-demo"
         @select="handleSelect"
         router
@@ -48,7 +48,20 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+      this.activeIndex = key
     },
+
+  },
+  computed: {
+    activeMenu() {
+      const route = this.$route
+      const {meta, path} = route
+      if (path == "/downloadShare")
+        return "shareFile";
+      if (meta.activeMenu)
+        return meta.activeMenu
+      return this.activeIndex
+    }
   },
   mounted() {
     console.log(this.activeIndex);

@@ -10,6 +10,7 @@ export default class FileUtils {
         let ksize = (size / Math.pow(1024, 1)).toFixed(fixDigits);
         if (ksize > 1)
             return ksize + "KB";
+        else return "1KB"
 
     }
 }
