@@ -269,9 +269,20 @@ export default {
   mounted: function () {
 
     this.initDrag();
+    this.wasmTest()
+
 
   },
+
   methods: {
+    async wasmTest() {
+      //引入wasm对象
+      let i = 0;
+      for (i = 0; i < 10; i++) {
+        console.log("wasm:" + i + "," + +this.$wasm.defaultModule.fib(i));
+      }
+
+    },
     clickJump() {
       this.getQRcode(this.fileKeyCode)
       let routeUrl = this.$router.resolve({

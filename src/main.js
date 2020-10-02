@@ -15,6 +15,11 @@ import axios from 'axios'
 import VueRouter from 'vue-router'
 import routerConfig from './router.config.js'
 
+import VueWasm from 'vue-wasm';
+import defaultWasm from './assets/share_assembly_bg.wasm';
+
+VueWasm(Vue, {modules: {defaultModule: defaultWasm}});
+
 Vue.use(VueRouter);
 Vue.use(VueClipboard)
 
