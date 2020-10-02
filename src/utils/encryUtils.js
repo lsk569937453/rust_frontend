@@ -6,7 +6,6 @@ import cryptoJs from 'crypto-js'
 export default {
     // 加密函數
     encrypt(word, password) {
-        console.log(word)
 
         let key = cryptoJs.enc.Hex.parse(password)
         let enc = ''

@@ -85,11 +85,11 @@
                       <i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>黄金糕</el-dropdown-item>
-                      <el-dropdown-item>狮子头</el-dropdown-item>
-                      <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                      <el-dropdown-item>双皮奶</el-dropdown-item>
-                      <el-dropdown-item>蚵仔煎</el-dropdown-item>
+                      <el-dropdown-item>twice</el-dropdown-item>
+                      <el-dropdown-item>2 times</el-dropdown-item>
+                      <el-dropdown-item>10 times</el-dropdown-item>
+                      <el-dropdown-item>50 times</el-dropdown-item>
+                      <el-dropdown-item>100 times</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
 
@@ -153,16 +153,21 @@
                     <el-row>
                       <el-col :span="24">
 
-                        <el-progress v-if="uploadProgress[index].status==''" :percentage="uploadProgress[index].percent"
+                        <el-progress v-if="uploadProgress[index]!=undefined&&!uploadProgress[index].isShow"
+                                     :percentage="uploadProgress[index].percent"
                         ></el-progress>
-                        <el-progress v-if="uploadProgress[index].status!=''" :percentage="uploadProgress[index].percent"
+                        <el-progress v-if="uploadProgress[index]!=undefined&&uploadProgress[index].isShow"
+                                     :percentage="uploadProgress[index].percent"
                                      :status="uploadProgress[index].status"></el-progress>
+
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="2"
                               :offset="21">
-                        <el-button v-if="uploadProgress[index].status==''" type="text">cancel</el-button>
+                        <el-button v-if="uploadProgress[index]!=undefined&&!uploadProgress[index].isShow" type="text">
+                          cancel
+                        </el-button>
                       </el-col>
                     </el-row>
                   </div>
@@ -199,7 +204,7 @@
                 <el-col :span="12"
                         :offset="6">
                   <el-input v-model="downloadedUrl"
-                            placeholder="请输入内容" style="margin-bottom: 20px"></el-input>
+                            placeholder="Please enter" style="margin-bottom: 20px"></el-input>
                   <el-button type="primary"
                              style="width:100%"
                              v-clipboard:copy="downloadedUrl"
@@ -248,6 +253,7 @@ export default {
   components: {TemplatePage},
   data() {
     return {
+      clientId: "",
       fileKeyCode: "",
       password: "0ca175b9c0f726a831d895e269332461",
       uploadProgress: [],
@@ -322,6 +328,7 @@ export default {
       })
     },
     async uploadFile() {
+
       this.pageStatus = 2;
 
       let reqArray = [];
@@ -330,7 +337,7 @@ export default {
         let temp = index;
         let obj = {
           percent: 0,
-          status: "",
+          isShow: false,
         };
         this.uploadProgress.push(obj);
 
@@ -344,17 +351,17 @@ export default {
                   (((progressEvent.loaded / progressEvent.total) * 100) | 0);
               let obj = {
                 percent: complete,
-                status: "",
+                isShow: false,
               }
+              console.log("before:" + temp + ":" + obj)
               this.$set(this.uploadProgress, temp, obj);
               // this.percent = complete
-              console.log(complete + temp)
+              console.log(complete + ":" + temp)
               if (complete >= 100) {
+                obj.isShow = true;
                 obj.status = "success";
-                //  this.uploadProgress[index] = 100
                 this.$set(this.uploadProgress, temp, obj);
-                // this.show = false
-                // this.percent = 0; // 重新置0
+
               }
             }
           },
@@ -362,10 +369,10 @@ export default {
         var forms = new FormData()
         var newFile = await this.encrypt(this.fileList[index]);
         forms.append('file', newFile)
-
-        // let form = {file: this.fileList[index]}
+        forms.append('clientId', this.clientId)
         reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
       }
+
       Request.all(reqArray).then(Request.spread((...res) => {
             this.pageStatus = 3;
             this.fileKeyCode = res[0].data.message;
@@ -379,6 +386,13 @@ export default {
       ).catch(errors => {
         console.log(errors)
       });
+    },
+    getClientId() {
+      Request.get("/api/shareFile/getClientID").then(response => {
+        if (response.data.resCode == 0) {
+          this.clientId = response.data.message;
+        }
+      })
     },
     encrypt(file) {
 
@@ -443,7 +457,6 @@ export default {
 
 
       this.pageStatus = 1;
-      console.log(fu)
     }
     ,
     getFile() {
@@ -458,6 +471,7 @@ export default {
     btnChange() {
       var file = document.getElementById('file');
       file.click();
+      this.getClientId()
     }
     ,
 
