@@ -244,6 +244,7 @@ import FileUtils from '../../utils/fileUtils';
 import CryptoJS from 'crypto-js'
 import TemplatePage from "../TemplatePage";
 import encryUtils from "../../utils/encryUtils";
+import uploadUtils from "../../utils/UploadUtils"
 
 let Base64 = require('js-base64').Base64;
 
@@ -269,20 +270,10 @@ export default {
   mounted: function () {
 
     this.initDrag();
-    this.wasmTest()
-
-
   },
 
   methods: {
-    async wasmTest() {
-      //引入wasm对象
-      let i = 0;
-      for (i = 0; i < 10; i++) {
-        console.log("wasm:" + i + "," + +this.$wasm.defaultModule.fib(i));
-      }
 
-    },
     clickJump() {
       this.getQRcode(this.fileKeyCode)
       let routeUrl = this.$router.resolve({
@@ -338,11 +329,12 @@ export default {
         correctLevel: QRCode.CorrectLevel.L//容错率，L/M/H
       })
     },
-    async uploadFile() {
+    uploadFile() {
 
       this.pageStatus = 2;
 
       let reqArray = [];
+
 
       for (var index in this.fileList) {
         let temp = index;
@@ -351,6 +343,63 @@ export default {
           isShow: false,
         };
         this.uploadProgress.push(obj);
+        reqArray.push(this.uploadSingeFile(this.fileList[index], temp))
+
+        // var config = {
+        //   headers: {
+        //     "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
+        //   },
+        //   onUploadProgress: (progressEvent) => {
+        //     if (progressEvent.lengthComputable) {
+        //       var complete =
+        //           (((progressEvent.loaded / progressEvent.total) * 100) | 0);
+        //       let obj = {
+        //         percent: complete,
+        //         isShow: false,
+        //       }
+        //       console.log("before:" + temp + ":" + obj)
+        //       this.$set(this.uploadProgress, temp, obj);
+        //       // this.percent = complete
+        //       console.log(complete + ":" + temp)
+        //       if (complete >= 100) {
+        //         obj.isShow = true;
+        //         obj.status = "success";
+        //         this.$set(this.uploadProgress, temp, obj);
+        //
+        //       }
+        //     }
+        //   },
+        // };
+        // var forms = new FormData()
+        // var newFile = await this.encrypt(this.fileList[index]);
+        // forms.append('file', newFile)
+        // forms.append('clientId', this.clientId)
+        // reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
+      }
+      ;
+      console.log(reqArray.length)
+      Promise.all(reqArray).then((values) => {
+            console.log(values)
+            this.pageStatus = 3;
+            this.fileKeyCode = values[0][0].data.message;
+            this.getQRcode(this.fileKeyCode);
+            setTimeout(() => {
+              this.bindQRCode();
+            }, 100);
+
+          }
+      );
+
+    },
+    uploadSingeFile(file, temp) {
+      let singleFileList = uploadUtils.splitFile(file);
+      let axiosArray = []
+      for (var index = 0; index < singleFileList.length; index++) {
+        var forms = new FormData()
+        forms.append('file', singleFileList[index].file)
+        forms.append('fileName', file.name)
+        forms.append('index', index)
+        forms.append('clientId', this.clientId)
 
         var config = {
           headers: {
@@ -377,26 +426,20 @@ export default {
             }
           },
         };
-        var forms = new FormData()
-        var newFile = await this.encrypt(this.fileList[index]);
-        forms.append('file', newFile)
-        forms.append('clientId', this.clientId)
-        reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
+
+
+        axiosArray.push(Request.post("/api/shareFile/uploadChunk", forms, config))
+
       }
+      return Promise.all(axiosArray).then((values) => {
+        var forms = new FormData()
 
-      Request.all(reqArray).then(Request.spread((...res) => {
-            this.pageStatus = 3;
-            this.fileKeyCode = res[0].data.message;
-            this.getQRcode(this.fileKeyCode);
-            setTimeout(() => {
-              this.bindQRCode();
-            }, 100)
+        forms.append('fileName', file.name)
+        forms.append('clientId', this.clientId)
 
-          }
-          )
-      ).catch(errors => {
-        console.log(errors)
+        return Request.post("/api/shareFile/mergeChunk", forms)
       });
+
     },
     getClientId() {
       Request.get("/api/shareFile/getClientID").then(response => {
