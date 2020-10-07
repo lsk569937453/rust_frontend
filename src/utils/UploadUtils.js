@@ -1,6 +1,6 @@
 import en from "element-ui/src/locale/lang/en";
 
-const BlockFileSize = 10 * 1024 * 1024
+const BlockFileSize = 3 * 1024 * 1024
 export default class UploadUtils {
 
 

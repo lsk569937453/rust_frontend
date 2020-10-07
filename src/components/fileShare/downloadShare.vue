@@ -98,6 +98,7 @@ export default {
       res += String.fromCharCode.apply(null, array.slice(i * chunk));
       return res;
     },
+
     clickSaveFile(fileName) {
       let obj = {}
 

@@ -245,6 +245,7 @@ import CryptoJS from 'crypto-js'
 import TemplatePage from "../TemplatePage";
 import encryUtils from "../../utils/encryUtils";
 import uploadUtils from "../../utils/UploadUtils"
+import pako from "pako"
 
 let Base64 = require('js-base64').Base64;
 
@@ -270,6 +271,7 @@ export default {
   mounted: function () {
 
     this.initDrag();
+
   },
 
   methods: {
@@ -334,8 +336,6 @@ export default {
       this.pageStatus = 2;
 
       let reqArray = [];
-
-
       for (var index in this.fileList) {
         let temp = index;
         let obj = {
@@ -344,42 +344,8 @@ export default {
         };
         this.uploadProgress.push(obj);
         reqArray.push(this.uploadSingeFile(this.fileList[index], temp))
-
-        // var config = {
-        //   headers: {
-        //     "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
-        //   },
-        //   onUploadProgress: (progressEvent) => {
-        //     if (progressEvent.lengthComputable) {
-        //       var complete =
-        //           (((progressEvent.loaded / progressEvent.total) * 100) | 0);
-        //       let obj = {
-        //         percent: complete,
-        //         isShow: false,
-        //       }
-        //       console.log("before:" + temp + ":" + obj)
-        //       this.$set(this.uploadProgress, temp, obj);
-        //       // this.percent = complete
-        //       console.log(complete + ":" + temp)
-        //       if (complete >= 100) {
-        //         obj.isShow = true;
-        //         obj.status = "success";
-        //         this.$set(this.uploadProgress, temp, obj);
-        //
-        //       }
-        //     }
-        //   },
-        // };
-        // var forms = new FormData()
-        // var newFile = await this.encrypt(this.fileList[index]);
-        // forms.append('file', newFile)
-        // forms.append('clientId', this.clientId)
-        // reqArray.push(Request.post("/api/shareFile/uploadFile", forms, config));
       }
-      ;
-      console.log(reqArray.length)
       Promise.all(reqArray).then((values) => {
-            console.log(values)
             this.pageStatus = 3;
             this.fileKeyCode = values[0][0].data.message;
             this.getQRcode(this.fileKeyCode);
@@ -394,60 +360,56 @@ export default {
     uploadSingeFile(file, temp) {
       let singleFileList = uploadUtils.splitFile(file);
       let axiosArray = []
+      let allSize = singleFileList.length;
+      let currentDone = 0;
       for (var index = 0; index < singleFileList.length; index++) {
-        var forms = new FormData()
-        forms.append('file', singleFileList[index].file)
-        forms.append('fileName', file.name)
-        forms.append('index', index)
-        forms.append('clientId', this.clientId)
+        let tempIndex = index;
+        let req = this.encrypt(singleFileList[tempIndex].file).then(value => {
+          var forms = new FormData()
 
-        var config = {
-          headers: {
-            "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
-          },
-          onUploadProgress: (progressEvent) => {
-            if (progressEvent.lengthComputable) {
-              var complete =
-                  (((progressEvent.loaded / progressEvent.total) * 100) | 0);
-              let obj = {
-                percent: complete,
-                isShow: false,
+          forms.append('file', value)
+          forms.append('fileName', file.name)
+          forms.append('index', tempIndex)
+          forms.append('clientId', this.clientId)
+          return Request.post("/api/shareFile/uploadChunk", forms, {
+            headers: {
+              "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
+            },
+            onUploadProgress: (progressEvent) => {
+              if (progressEvent.lengthComputable) {
+                var complete = (((progressEvent.loaded / progressEvent.total) * 100) | 0);
+                console.log(complete + ":" + temp)
+                if (complete >= 100) {
+                  let obj = {
+                    isShow: false,
+                  }
+                  currentDone = currentDone + 1;
+                  let caculate = parseInt((currentDone / allSize) * 100)
+                  obj.percent = caculate
+                  if (caculate == 100) {
+                    obj.isShow = true;
+                    obj.status = "success";
+                  }
+                  this.$set(this.uploadProgress, temp, obj);
+                }
               }
-              console.log("before:" + temp + ":" + obj)
-              this.$set(this.uploadProgress, temp, obj);
-              // this.percent = complete
-              console.log(complete + ":" + temp)
-              if (complete >= 100) {
-                obj.isShow = true;
-                obj.status = "success";
-                this.$set(this.uploadProgress, temp, obj);
-
-              }
-            }
-          },
-        };
-
-
-        axiosArray.push(Request.post("/api/shareFile/uploadChunk", forms, config))
-
+            },
+          });
+        });
+        axiosArray.push(req)
       }
-      return Promise.all(axiosArray).then((values) => {
-        var forms = new FormData()
+      return Request.all(axiosArray);
 
-        forms.append('fileName', file.name)
-        forms.append('clientId', this.clientId)
-
-        return Request.post("/api/shareFile/mergeChunk", forms)
-      });
-
-    },
+    }
+    ,
     getClientId() {
       Request.get("/api/shareFile/getClientID").then(response => {
         if (response.data.resCode == 0) {
           this.clientId = response.data.message;
         }
       })
-    },
+    }
+    ,
     encrypt(file) {
 
       return new Promise((resolve, reject) => {
@@ -458,14 +420,15 @@ export default {
           buffer = buffer.toString("base64")
           let entrString = encryUtils.encrypt(buffer, this.password)
           let encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(entrString));
-          let arra = this.str2ab(encData);
+          var deflateData = pako.deflate(encData, {to: 'string'})
+
+          let arra = this.str2ab(deflateData);
           var encryptedFile = new File([arra], file.name, null);
           resolve(encryptedFile)
         };
       });
-
-
-    },
+    }
+    ,
     str2ab(str) {
       var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
       var bufView = new Uint16Array(buf);
