@@ -3,12 +3,25 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
+    performance: {
+        hints: 'warning',
+        //入口起点的最大体积 整数类型（以字节为单位）
+        maxEntrypointSize: 50000000,
+        //生成文件的最大体积 整数类型（以字节为单位 300k）
+        maxAssetSize: 30000000,
+        //只给出 js 文件的性能提示
+        assetFilter: function (assetFilename) {
+            return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+        }
+    },
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: {
         app: './src/main.js'
     },
@@ -19,6 +32,7 @@ module.exports = {
             ? config.build.assetsPublicPath
             : config.dev.assetsPublicPath
     },
+    plugins: [new VueLoaderPlugin()],
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {
@@ -29,9 +43,16 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.wasm$/,
-                loaders: ['wasm-loader']
+                test: /\.worker\.js$/, //以.worker.js结尾的文件将被worker-loader加载
+                use: {
+                    loader: 'worker-loader',
+                    options: {inline: "fallback", publicPath: '/workers/'}
+                }
             },
+            // {
+            //     test: /\.wasm$/,
+            //     loaders: ['wasm-loader']
+            // },
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',

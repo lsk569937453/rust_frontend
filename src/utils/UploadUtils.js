@@ -1,8 +1,11 @@
 import en from "element-ui/src/locale/lang/en";
 
 const BlockFileSize = 3 * 1024 * 1024
+
+//const BlockFileSize = 1 * 1024
 export default class UploadUtils {
 
+    static MaxEncryptSize = 2024 * 1024 * 1024
 
     static splitFile(uploadFile) {
         let allLength = uploadFile.size;

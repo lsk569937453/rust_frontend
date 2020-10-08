@@ -246,6 +246,8 @@ import TemplatePage from "../TemplatePage";
 import encryUtils from "../../utils/encryUtils";
 import uploadUtils from "../../utils/UploadUtils"
 import pako from "pako"
+import CrypticoWorker from '../../workers/crypt.worker';
+import PromisePool from "es6-promise-pool"
 
 let Base64 = require('js-base64').Base64;
 
@@ -265,6 +267,8 @@ export default {
       fileList: [],
       fileTotal: "",
       passwordChecked: false,
+      webWorker: null,
+
 
     };
   },
@@ -272,9 +276,26 @@ export default {
 
     this.initDrag();
 
-  },
+    console.log("aaa")
+    // this.postWebWorkerMessage("encrypt", "aaaa", "1234567890123456").then((res) => {
+    //   console.log("ccc" + res)
+    // })
 
+  },
+  async created() {
+    this.webWorker = new CrypticoWorker();
+
+  },
   methods: {
+    postWebWorkerMessage(messageType, ...messagePayload) {
+      return new Promise((resolve) => {
+        let obj = {method: messageType, args: messagePayload}
+        this.webWorker.postMessage(obj);
+        this.webWorker.addEventListener('message', (response) => {
+          resolve(response.data);
+        });
+      })
+    },
 
     clickJump() {
       this.getQRcode(this.fileKeyCode)
@@ -358,15 +379,58 @@ export default {
 
     },
     uploadSingeFile(file, temp) {
+      if (file.size > uploadUtils.MaxEncryptSize) {
+        return this.uploadWholeFile(file, temp)
+      } else {
+        return this.uploadChunk(file, temp)
+      }
+
+    },
+    uploadWholeFile(file, temp) {
+      var forms = new FormData()
+      forms.append('file', file)
+      forms.append('fileName', file.name)
+      forms.append('index', 0)
+      forms.append('clientId', this.clientId)
+      return Request.post("/api/shareFile/uploadChunk", forms, {
+        headers: {
+          "Content-Type": 'multipart/form-data;boundary = ' + new Date().getTime(),
+        },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.lengthComputable) {
+            var complete = (((progressEvent.loaded / progressEvent.total) * 100) | 0);
+            console.log(complete + ":" + temp)
+            let obj = {
+              isShow: false,
+              percent: complete
+            }
+            this.$set(this.uploadProgress, temp, obj);
+
+            if (complete >= 100) {
+              obj.isShow = true;
+              obj.status = "success";
+
+              this.$set(this.uploadProgress, temp, obj);
+            }
+          }
+        },
+      }).then((res) => {
+        return new Promise(resolve => resolve(res))
+      });
+    },
+    uploadChunk(file, temp) {
       let singleFileList = uploadUtils.splitFile(file);
       let axiosArray = []
       let allSize = singleFileList.length;
       let currentDone = 0;
+
       for (var index = 0; index < singleFileList.length; index++) {
         let tempIndex = index;
-        let req = this.encrypt(singleFileList[tempIndex].file).then(value => {
-          var forms = new FormData()
 
+        this.encrypt(singleFileList[tempIndex].file).then((value) => {
+          console.log("second has done" + new Date())
+
+          var forms = new FormData()
           forms.append('file', value)
           forms.append('fileName', file.name)
           forms.append('index', tempIndex)
@@ -394,14 +458,13 @@ export default {
                 }
               }
             },
-          });
+          })
         });
-        axiosArray.push(req)
-      }
-      return Request.all(axiosArray);
 
-    }
-    ,
+        //axiosArray.push(req)
+      }
+      //  return Request.all([]);
+    },
     getClientId() {
       Request.get("/api/shareFile/getClientID").then(response => {
         if (response.data.resCode == 0) {
@@ -411,22 +474,31 @@ export default {
     }
     ,
     encrypt(file) {
+//      return new Promise(resolve => resolve(file))
+      //   return this.postWebWorkerMessage("encryptFile", file, this.password)
 
       return new Promise((resolve, reject) => {
         var fr = new FileReader();
         fr.readAsArrayBuffer(file);
-        fr.onload = () => {
-          let buffer = Buffer.from(fr.result);
-          buffer = buffer.toString("base64")
-          let entrString = encryUtils.encrypt(buffer, this.password)
-          let encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(entrString));
-          var deflateData = pako.deflate(encData, {to: 'string'})
-
-          let arra = this.str2ab(deflateData);
-          var encryptedFile = new File([arra], file.name, null);
-          resolve(encryptedFile)
+        fr.onload = function () {
+          resolve(fr);
         };
+      }).then((reader) => {
+        return this.postWebWorkerMessage("encryptFile", reader.result, this.password)
       });
+      //   let buffer = Buffer.from(reader.result);
+      //   buffer = buffer.toString("base64")
+      //   return this.postWebWorkerMessage("encrypt", buffer, this.password).then((entrString) => {
+      //     let encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(entrString));
+      //     var deflateData = pako.deflate(encData, {to: 'string'})
+      //
+      //     let arra = this.str2ab(deflateData);
+      //     var encryptedFile = new File([arra], file.name, null);
+      //     console.log("first has done" + new Date())
+      //
+      //     return new Promise(resolve => resolve(encryptedFile))
+      //   })
+      // });
     }
     ,
     str2ab(str) {
@@ -471,9 +543,8 @@ export default {
       this.fileList = arr;
       //recount the total size
       this.reCountFileSize();
-
-
       this.pageStatus = 1;
+
     }
     ,
     getFile() {
