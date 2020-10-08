@@ -25,7 +25,7 @@ function encryptFile(reader, password) {
 
     let arra = str2ab(deflateData);
     var encryptedFile = new File([arra], "file.name", null);
-    console.log("first has done" + new Date())
+    // console.log("first has done" + new Date())
 
     return encryptedFile
 

@@ -11,7 +11,7 @@ var Request = axios.create(
 
 Request.interceptors.request.use((config) => {
     // config.headers['request-startTime'] = process.hrtime()
-    console.log("send req:" + new Date())
+    // console.log("send req:" + new Date())
     return config
 })
 //

@@ -399,7 +399,7 @@ export default {
         onUploadProgress: (progressEvent) => {
           if (progressEvent.lengthComputable) {
             var complete = (((progressEvent.loaded / progressEvent.total) * 100) | 0);
-            console.log(complete + ":" + temp)
+            // console.log(complete + ":" + temp)
             let obj = {
               isShow: false,
               percent: complete
@@ -427,8 +427,8 @@ export default {
       for (var index = 0; index < singleFileList.length; index++) {
         let tempIndex = index;
 
-        this.encrypt(singleFileList[tempIndex].file).then((value) => {
-          console.log("second has done" + new Date())
+        let req = this.encrypt(singleFileList[tempIndex].file).then((value) => {
+          // console.log("second has done" + new Date())
 
           var forms = new FormData()
           forms.append('file', value)
@@ -442,7 +442,7 @@ export default {
             onUploadProgress: (progressEvent) => {
               if (progressEvent.lengthComputable) {
                 var complete = (((progressEvent.loaded / progressEvent.total) * 100) | 0);
-                console.log(complete + ":" + temp)
+                // console.log(complete + ":" + temp)
                 if (complete >= 100) {
                   let obj = {
                     isShow: false,
@@ -461,9 +461,9 @@ export default {
           })
         });
 
-        //axiosArray.push(req)
+        axiosArray.push(req)
       }
-      //  return Request.all([]);
+      return Request.all(axiosArray);
     },
     getClientId() {
       Request.get("/api/shareFile/getClientID").then(response => {
