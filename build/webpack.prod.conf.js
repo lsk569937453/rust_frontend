@@ -5,11 +5,13 @@ const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+//const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+//const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const env = config.build.env
 
@@ -40,15 +42,15 @@ const webpackConfig = merge(baseWebpackConfig, {
         // }),
         // extract css into its own file
         new ExtractTextPlugin({
-            filename: utils.assetsPath('css/[name].[contenthash].css')
+            filename: utils.assetsPath('css/[name]_[md5:contenthash:hex:8].css')
         }),
         // Compress extracted CSS. We are using this plugin so that possible
         // duplicated CSS from different components can be deduped.
-        new OptimizeCSSPlugin({
-            cssProcessorOptions: {
-                safe: true
-            }
-        }),
+        // new OptimizeCSSPlugin({
+        //     cssProcessorOptions: {
+        //         safe: true
+        //     }
+        // }),
         // generate dist index.html with correct asset hash for caching.
         // you can customize output by editing /index.html
         // see https://github.com/ampedandwired/html-webpack-plugin
@@ -64,7 +66,7 @@ const webpackConfig = merge(baseWebpackConfig, {
                 // https://github.com/kangax/html-minifier#options-quick-reference
             },
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-            chunksSortMode: 'dependency'
+            // chunksSortMode: 'dependency'
         }),
         // keep module.id stable when vender modules does not change
         new webpack.HashedModuleIdsPlugin(),
@@ -96,21 +98,51 @@ const webpackConfig = merge(baseWebpackConfig, {
                 ignore: ['.*']
             }
         ])
+        // new CopyPlugin({
+        //     patterns: [
+        //         {from: 'source', to: 'dest'},
+        //         {from: 'other', to: 'public'},
+        //     ],
+        //     options: {
+        //         concurrency: 100,
+        //     },
+        // }),
     ],
     optimization: {
         minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    output: {
-                        comments: false
-                    },
+            new TerserPlugin({
+                parallel: 4, // 并行打包
+                terserOptions: {
+                    ecma: undefined,
+                    warnings: false,
+                    parse: {},
                     compress: {
-                        warnings: false,
-                        drop_debugger: true,
+                        drop_debugger: false,  // 除了这两句是我加的，基他都是默认配置
                         drop_console: true
-                    }
+                    },
+                    mangle: true, // Note `mangle.properties` is `false` by default.
+                    module: false,
+                    output: null,
+                    toplevel: false,
+                    nameCache: null,
+                    ie8: false,
+                    keep_classnames: undefined,
+                    keep_fnames: false,
+                    safari10: false,
                 }
             })
+            // new UglifyJsPlugin({
+            //     uglifyOptions: {
+            //         output: {
+            //             comments: false
+            //         },
+            //         warnings: false,
+            //         compress: {
+            //             drop_debugger: true,
+            //             drop_console: true
+            //         }
+            //     }
+            // })
         ],
         splitChunks: {
             cacheGroups: {
