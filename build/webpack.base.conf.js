@@ -22,8 +22,8 @@ module.exports = {
             return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
         }
     },
-    //   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-    mode: 'development',
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    //mode: 'development',
     entry: {
         app: './src/main.js'
     },
