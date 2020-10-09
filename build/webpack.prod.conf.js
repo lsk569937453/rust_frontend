@@ -8,10 +8,11 @@ const baseWebpackConfig = require('./webpack.base.conf')
 //const CopyPlugin = require('copy-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 //const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const env = config.build.env
 
@@ -41,9 +42,12 @@ const webpackConfig = merge(baseWebpackConfig, {
         //   sourceMap: true
         // }),
         // extract css into its own file
-        new ExtractTextPlugin({
-            filename: utils.assetsPath('css/[name]_[md5:contenthash:hex:8].css')
-        }),
+        // new ExtractTextPlugin({
+        //     filename: utils.assetsPath('css/[name]_[md5:contenthash:hex:8].css'),
+        //     allChunks: true
+        //
+        // }),
+        new MiniCssExtractPlugin(),
         // Compress extracted CSS. We are using this plugin so that possible
         // duplicated CSS from different components can be deduped.
         // new OptimizeCSSPlugin({

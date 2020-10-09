@@ -249,7 +249,7 @@ import pako from "pako"
 import CrypticoWorker from '../../workers/crypt.worker';
 import PromisePool from "es6-promise-pool"
 
-let Base64 = require('js-base64').Base64;
+//let Base64 = require('js-base64').Base64;
 
 
 export default {
