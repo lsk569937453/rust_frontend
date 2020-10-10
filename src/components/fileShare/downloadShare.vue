@@ -48,13 +48,8 @@
 
 <script>
 import Request from "../../utils/axiosUtils";
-import QRCode from 'qrcodejs2';
-import FileUtils from '../../utils/fileUtils';
 import CryptoJS from 'crypto-js'
-import TemplatePage from "../TemplatePage";
 import encryUtils from "../../utils/encryUtils";
-
-let Base64 = require('js-base64').Base64;
 
 
 export default {
