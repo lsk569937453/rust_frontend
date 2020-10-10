@@ -52,7 +52,7 @@
                            sortable
                            label="ReqType"></el-table-column>
           <el-table-column fixed="right"
-                           label="action"
+                           label="Action"
                            min-width="3"
                            align="center">
             <template slot-scope="scope">
