@@ -194,12 +194,12 @@ export default {
       ],
       rules: {
         taskName: [
-          {required: true, message: "请输入活动名称", trigger: "blur"}
+          {required: true, message: "Please enter task name", trigger: "blur"}
         ],
         cronExpressionInput: [
-          {required: true, message: "请输入cron表达式", trigger: "blur"}
+          {required: true, message: "Please enter cron expression", trigger: "blur"}
         ],
-        url: [{required: true, message: "请输入url", trigger: "blur"}]
+        url: [{required: true, message: "Please enter url", trigger: "blur"}]
       }
     };
   },
@@ -354,6 +354,12 @@ export default {
               this.openFullScreen1();
 
               //  this.checklog = data.message;
+            }else if (data.resCode == -2) {
+              let messageArray = response.data.message;
+              var message = messageArray.map(function (item) {
+                return item.message;
+              })
+              this.$message.error('Illegal request parameter');
             }
             console.log(response);
             self.time = response.data;
