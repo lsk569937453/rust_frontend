@@ -57,8 +57,8 @@
           <el-table-column type="expand">
             <template slot-scope="props">
               <span class="demoSpan"
-                    v-for="(item,i) in  props.row.desc"
-                    :key="i">2020-08-20 05:20:20
+                    v-for="(item,i) in  props.row.result"
+                    :key="i">{{ item }}
               </span>
 
             </template>
@@ -86,6 +86,7 @@
 <script>
 import Request from "../utils/axiosUtils";
 import expressionUtils from "../utils/cronSample.js"
+import cronSample from "../utils/cronSample.js";
 
 export default {
   name: "addTaskPage",
@@ -116,12 +117,27 @@ export default {
   },
 
   mounted () {
-    // document
-    //   .querySelector("body")
-    //   .setAttribute("style", "background-color:#C0C4CC");
-    this.tableData = expressionUtils.getAllExpression()
+
+    this.httpGetCronExecResult();
+
   },
   methods: {
+    httpGetCronExecResult(){
+      this.tableData = expressionUtils.getAllExpression()
+    //  const reqData=this.tableData.map(({cron:req})=>({req}));
+      const reqData=this.tableData.map(item=> item.cron);
+      // console.log(this.tableData)
+      Request.post("/api/cron/getCronExecResult",{cronList:reqData}).then((res)=>{
+        const brr=res.data.message;
+       brr.sort(function (a,b){
+          return cronSample.sortFunction(a.cronExpression,b.cronExpression);
+        })
+
+        this.tableData=this.tableData.map((item,index)=>({...item,...brr[index]}));
+        console.log(this.tableData)
+
+      })
+    },
     clickTable (row, index, e) {
       this.$refs.refTable.toggleRowExpansion(row)
     }
