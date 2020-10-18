@@ -20,23 +20,23 @@
         <el-card>
           <el-row>
 
-            <el-col :span="5" :offset="2">
+            <el-col :span="7">
               <span class="fa fa-file-text"
                     style="color: #3a8ee6;font-size: 35px"></span>
               <span>{{ item }}</span>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <div style="margin-top: 10px">
                 <span>Expiration time：<i style="color: rgb(51 197 62)">2020-08-09 11:08:02</i></span>
               </div>
             </el-col>
-            <el-col :span="3" :offset="2">
+            <el-col :span="4">
               <div style="margin-top: 10px">
                 <span>Remaining times: <i style="color: red;font-weight: 600;font-size: 20px">2</i></span>
               </div>
             </el-col>
-            <el-col :span="3" :offset="2">
-              <el-button type="text" @click="clickSaveFile(item)">Click To Download</el-button>
+            <el-col :span="3" :offset="1">
+              <el-button type="text" @click="clickSaveFileTest(item)">Click To Download</el-button>
             </el-col>
           </el-row>
         </el-card>
@@ -92,6 +92,13 @@ export default {
       }
       res += String.fromCharCode.apply(null, array.slice(i * chunk));
       return res;
+    },
+    clickSaveFileTest(fileName) {
+      Request.get("/api/shareFile/getChunkList?clientId=" + this.fileKeyCode + "&fileName=" + fileName).then(response => {
+        if (response.data.resCode == 0) {
+          console.log(response)
+        }
+      });
     },
 
     clickSaveFile(fileName) {
