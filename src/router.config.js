@@ -1,4 +1,7 @@
-export default {
+import Router from 'vue-router'
+
+
+const routerConfig = new Router({
     routes:
         [
             {
@@ -6,13 +9,20 @@ export default {
                 redirect: "/loginPage",
             },
             {
+                path: '/refresh',
+                component: () => import(/* webpackChunkName: "home" */ './components/refresh.vue'),
+            },
+            {
                 path: '/',
                 component: () => import(/* webpackChunkName: "home" */ './components/home.vue'),
-                meta: {title: '自述文件'},
+                meta: {
+                    title: '自述文件', requireAuth: true
+                },
                 children: [
                     {
                         path: "/realPage",
                         component: () => import(/* webpackChunkName: "index" */ './components/TemplatePage.vue'),
+
                     },
                     {
                         path: "/taskPage",
@@ -55,4 +65,23 @@ export default {
                 component: () => import(/* webpackChunkName: "index" */ './components/login.vue'),
             }
         ]
-}
+
+})
+
+// 判断是否需要登录权限 以及是否登录
+routerConfig.beforeEach((to, from, next) => {
+    if (to.matched.some(res => res.meta.requireAuth)) {// 判断是否需要登录权限
+        if (localStorage.getItem('username')) {// 判断是否登录
+            next()
+        } else {// 没登录则跳转到登录界面
+            next({
+                path: '/loginPage',
+                query: {redirect: to.fullPath}
+            })
+        }
+    } else {
+        next()
+    }
+})
+
+export default routerConfig

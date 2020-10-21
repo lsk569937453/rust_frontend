@@ -63,7 +63,6 @@ export default {
   },
   data() {
     return {
-
       verifyCodeInput: "",
       identifyCode: "",
       param: {
@@ -95,6 +94,7 @@ export default {
         this.$message.error('Please enter the correct verification code');
         return
       }
+      localStorage.setItem("username", "lsk")
       this.$router.push({name: "shareFile"});
     },
   },

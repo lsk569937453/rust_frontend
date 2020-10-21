@@ -35,12 +35,11 @@ Vue.use(JsonViewer)
 
 Vue.config.productionTip = false
 
-
-var router = new VueRouter(routerConfig);
+console.log(routerConfig)
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     template: '<App/>',
     components: {App},
-    router: router,
+    router: routerConfig,
 })

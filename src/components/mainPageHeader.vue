@@ -2,7 +2,8 @@
   <div class="fatherDiv">
 
     <el-dropdown trigger="click"
-                 class="header-right">
+                 class="header-right"
+                 @command="handleCommand">
       <span class="el-dropdown-link"
             style="font-size:20px">
         Jams
@@ -39,6 +40,12 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+     handleCommand() {
+      localStorage.removeItem("username")
+       this.$router.replace({
+        path: '/refresh'
+      })
     },
     pingDb() {
 
