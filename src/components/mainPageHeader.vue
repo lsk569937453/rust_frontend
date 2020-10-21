@@ -41,9 +41,9 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-     handleCommand() {
+    handleCommand() {
       localStorage.removeItem("username")
-       this.$router.replace({
+      this.$router.replace({
         path: '/refresh'
       })
     },
@@ -105,7 +105,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
-  height: 60%;
+  /*height: 60%;*/
 }
 
 .readtitle {
