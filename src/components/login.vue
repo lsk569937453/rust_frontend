@@ -92,6 +92,7 @@ export default {
     submitForm() {
       if (this.verifyCodeInput !== this.identifyCode) {
         this.$message.error('Please enter the correct verification code');
+        this.refreshVerifyCode()
         return
       }
       localStorage.setItem("username", "lsk")
