@@ -28,14 +28,10 @@
                        icon="el-icon-lock"></el-button>
           </el-input>
         </el-form-item>
-        <el-form-item class="verifyForm">
+        <el-form-item class="verifyForm" style="user-select:none">
           <el-col :span="16">
-            <!--            <el-input v-model="verifyCodeInput" maxlength="4">-->
-
-            <!--            </el-input>-->
-
-            <CodeInput :loading="false" class="input" :fields="4" :fieldHeight="40"/>
-
+            <CodeInput :loading="false" class="input" :fields="4" :fieldHeight="40"
+                       v-on:complete="onComplete"/>
           </el-col>
           <el-col :span="4" :offset="2">
             <div @click.stop.prevent="refreshVerifyCode">
@@ -56,7 +52,6 @@
 </template>
 
 <script>
-import Request from "../utils/axiosUtils";
 import verifyCode from "./verifyCode"
 import CodeInput from "vue-verification-code-input";
 
@@ -68,8 +63,9 @@ export default {
   },
   data() {
     return {
+
       verifyCodeInput: "",
-      identifyCode: "111",
+      identifyCode: "",
       param: {
         username: "admin",
         password: "123123",
@@ -84,13 +80,21 @@ export default {
   },
 
   mounted() {
+    this.refreshVerifyCode()
   },
   methods: {
+    onComplete(v) {
+      this.verifyCodeInput = v;
+    },
     refreshVerifyCode() {
       const randomNumber = Math.floor(Math.random() * 9000) + 1000
       this.identifyCode = randomNumber.toString();
     },
     submitForm() {
+      if (this.verifyCodeInput !== this.identifyCode) {
+        this.$message.error('Please enter the correct verification code');
+        return
+      }
       this.$router.push({name: "shareFile"});
     },
   },
